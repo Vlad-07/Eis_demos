@@ -5,7 +5,9 @@ class Demo
 public:
 	Demo(const std::string& name) : m_Name(name) {}
 
-	virtual void Init() {};
+	virtual void OnAttach() {}
+	virtual void OnDetach() {}
+
 	virtual void Update(Eis::TimeStep) {};
 	virtual void ImGuiRender() {};
 	virtual void OnEvent(Eis::Event& e) {};

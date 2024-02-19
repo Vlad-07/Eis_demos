@@ -2,7 +2,7 @@
 
 GTDemo::GTDemo(const std::string& name) : Demo(name) {}
 
-void GTDemo::Init()
+void GTDemo::OnAttach()
 {
 	m_Simulation.Init();
 	m_Simulation.SetMatrix(GameTheory::RewardMatrix({ 0.1f, 0.1f, 0.5f, 0.1f }, 1.0f));

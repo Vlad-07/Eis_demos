@@ -13,7 +13,7 @@ public:
 	OverviewDemo(const std::string& name);
 	~OverviewDemo() = default;
 
-	virtual void Init() override;
+	virtual void OnAttach() override;
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;
 	virtual void OnEvent(Eis::Event& e) override;

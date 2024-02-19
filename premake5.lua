@@ -51,7 +51,8 @@ project "Demos"
 		"Eis/vendor/spdlog/include",
 		"Eis/vendor/imgui",
 		"Eis/vendor/implot",
-		"Eis/vendor/glm"
+		"Eis/vendor/glm",
+		"Eis/vendor/GameNetworkingSockets/include"
 	}
 
 	links

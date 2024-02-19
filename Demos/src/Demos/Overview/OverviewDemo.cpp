@@ -3,7 +3,7 @@
 OverviewDemo::OverviewDemo(const std::string& name) : Demo(name), m_CameraController(16.0f / 9.0f), m_LineAngle(0.0f)
 {}
 
-void OverviewDemo::Init()
+void OverviewDemo::OnAttach()
 {
 	EIS_TRACE("Loading assets...");
 	ice = Eis::Texture2D::Create("assets/textures/ice.png");

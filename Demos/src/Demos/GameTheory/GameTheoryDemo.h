@@ -14,7 +14,7 @@ class GTDemo : public Demo
 public:
 	GTDemo(const std::string& name);
 
-	virtual void Init() override;
+	virtual void OnAttach() override;
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;
 	virtual void OnEvent(Eis::Event&) override;
