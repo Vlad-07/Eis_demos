@@ -78,10 +78,4 @@ void GTDemo::ImGuiRender()
 	}
 
 	ImGui::End();
-
-
-
-	ImGui::Begin("Performance");
-	ImGui::Text("%.3f FPS", 1.0f / lastTs.GetSeconds());
-	ImGui::End();
 }

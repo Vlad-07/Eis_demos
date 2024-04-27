@@ -7,6 +7,7 @@
 #include "Demos/Demo.h"
 
 
+// Also a graphic unit test for Eis
 class OverviewDemo : public Demo
 {
 public:

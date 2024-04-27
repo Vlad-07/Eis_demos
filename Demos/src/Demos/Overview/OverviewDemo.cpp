@@ -1,7 +1,7 @@
 #include "OverviewDemo.h"
 
 OverviewDemo::OverviewDemo(const std::string& name)
-	: Demo(name), m_CameraController(16.0f / 9.0f), m_LineAngle(0.0f), m_CircleThickness(1.0f), m_CircleFade(0.0f)
+	: Demo(name), m_CameraController(16.0f / 9.0f), m_LineAngle(0.0f), m_CircleThickness(0.9f), m_CircleFade(0.1f)
 {}
 
 void OverviewDemo::OnAttach()
@@ -21,6 +21,7 @@ void OverviewDemo::Update(Eis::TimeStep ts)
 
 	{
 		EIS_PROFILE_SCOPE("Renderer Prep");
+		Eis::Renderer2D::ResetStats();
 		Eis::Renderer2D::Clear();
 	}
 
@@ -32,16 +33,17 @@ void OverviewDemo::Update(Eis::TimeStep ts)
 		Eis::Renderer2D::DrawQuad(glm::vec2(-1.0f), glm::vec2(1.0f), glm::vec4(1, 0, 0, 1));
 		Eis::Renderer2D::DrawQuad(glm::vec2(-1.0f, 0.0f), glm::vec2(1.0f), ice);
 
-		static float rot = 0.0f; rot += 0.2f;
+		static float rot = 0.0f; rot += 28.8f * ts;
 		if (rot >= 360.f) rot -= 360.0f;
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 1.0f), glm::vec2(1.0f, 0.3f), rot, glm::vec4(0.8f, 0.5f, 0.2f, 1.0f));
+		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 0.0f), glm::vec2(1.0f), rot, mouce);
 
-		static float x = 0.0f, inc = 0.01f;
-		Eis::Renderer2D::DrawCircle(glm::vec2(x += inc, 1.0f), glm::vec2(2.0f), glm::vec4(0.5f), m_CircleThickness, m_CircleFade);
-		if (x > 2.0f || x < -2.0f) inc *= -1;
+		static float x = 0.0f, fact = 1.0f;
+		Eis::Renderer2D::DrawCircle(glm::vec2(x += ts * fact, 1.0f), glm::vec2(1.0f), glm::vec4(1, 1, 0, 1), m_CircleThickness, m_CircleFade);
+		if (x > 2.0f || x < -2.0f) fact *= -1;
 
 		Eis::Renderer2D::DrawLine(glm::vec2(1.0f, 0.0f), m_LineAngle, 0.5f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-		m_LineAngle += 0.15f; if (m_LineAngle > 360.0f) m_LineAngle -= 360.0f;
+		m_LineAngle += 100.0f * ts; if (m_LineAngle > 360.0f) m_LineAngle -= 360.0f;
 
 		Eis::Renderer2D::EndScene();
 	}

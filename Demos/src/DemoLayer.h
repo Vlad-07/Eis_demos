@@ -27,4 +27,5 @@ public:
 
 private:
 	DemoManager m_DemoManager;
+	Eis::TimeStep m_LastTs;
 };
