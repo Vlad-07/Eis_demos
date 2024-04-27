@@ -84,7 +84,7 @@ void ChatDemo::ImGuiRender()
 				});
 				m_Server->SetDataReceivedCallback([this](const Eis::ClientInfo& info, Eis::Buffer& buf) {
 					m_Server->SendBufferToAllClients(buf, info.Id);
-					buf.NullTerminate();
+					buf.AppendNull();
 					ChatHelper::Get().m_MessageHistory.push_back(buf.As<const char>());
 				});
 				m_Server->Start();
@@ -107,7 +107,7 @@ void ChatDemo::ImGuiRender()
 					ChatHelper::Get().m_MessageHistory.push_back("Disconnected from server.");
 				});
 				m_Client->SetDataReceivedCallback([](Eis::Buffer& buf) {
-					buf.NullTerminate();
+					buf.AppendNull();
 					ChatHelper::Get().m_MessageHistory.push_back(buf.As<const char>());
 				});
 				m_Client->ConnectToServer(m_Conf.ip);

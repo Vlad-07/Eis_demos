@@ -8,11 +8,9 @@ void DemoLayer::OnAttach()
 {
 	EIS_PROFILE_FUNCTION();
 
-	Eis::RenderCommands::Disable(0x0B71); // GL_DEPTH_TEST
-
+	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
 	m_DemoManager.LoadDemo(new ChatDemo("Chat Demo"));
 	m_DemoManager.LoadDemo(new SandDemo("Sand Demo"));
-	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
 	m_DemoManager.LoadDemo(new GTDemo("Game Theory"));
 
 	m_DemoManager.GetCurrentDemo().OnAttach();

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Eis.h"
-
+#include <Eis.h>
 #include <imgui.h>
 #include <implot.h>
 
 #include "Demos/Demo.h"
+
 
 class OverviewDemo : public Demo
 {
@@ -21,5 +21,5 @@ public:
 private:
 	Eis::OrthoCameraController m_CameraController;
 	Eis::Ref<Eis::Texture2D> ice, mouce;
-	float m_LineAngle;
+	float m_LineAngle, m_CircleThickness, m_CircleFade;
 };

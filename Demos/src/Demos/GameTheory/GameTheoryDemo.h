@@ -17,7 +17,6 @@ public:
 	virtual void OnAttach() override;
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;
-	virtual void OnEvent(Eis::Event&) override;
 
 private:
 	GameTheory::Simulation m_Simulation;

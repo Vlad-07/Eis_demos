@@ -4,6 +4,8 @@ GTDemo::GTDemo(const std::string& name) : Demo(name) {}
 
 void GTDemo::OnAttach()
 {
+	Eis::Renderer2D::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+
 	m_Simulation.Init();
 	m_Simulation.SetMatrix(GameTheory::RewardMatrix({ 0.1f, 0.1f, 0.5f, 0.1f }, 1.0f));
 	//   A   B
@@ -14,11 +16,11 @@ void GTDemo::OnAttach()
 	m_xHistory.push_back(0.0f);
 }
 
+
 void GTDemo::Update(Eis::TimeStep ts)
 {
-	EIS_PROFILE_SCOPE("Renderer Prep");
-	Eis::RenderCommands::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-	Eis::RenderCommands::Clear();
+	EIS_PROFILE_FUNCTION();
+	Eis::Renderer2D::Clear();
 
 	lastTs = ts;
 }
@@ -83,5 +85,3 @@ void GTDemo::ImGuiRender()
 	ImGui::Text("%.3f FPS", 1.0f / lastTs.GetSeconds());
 	ImGui::End();
 }
-
-void GTDemo::OnEvent(Eis::Event&) {}

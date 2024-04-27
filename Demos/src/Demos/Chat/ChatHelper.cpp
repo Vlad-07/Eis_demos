@@ -2,6 +2,7 @@
 
 #include <Eis/Core/Log.h>
 
+
 ChatHelper* ChatHelper::s_Instance = nullptr;
 
 
