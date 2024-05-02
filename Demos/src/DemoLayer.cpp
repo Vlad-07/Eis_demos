@@ -46,19 +46,23 @@ void DemoLayer::OnImGuiRender()
 				m_DemoManager.GetCurrentDemo().OnAttach();
 			}
 		}
+		if (ImGui::Button("Quit")) Eis::Application::ShouldClose();
 	} ImGui::End();
 
-	if (ImGui::Begin("Performance")) {
-		// Rolling average based fps counter
-		const int framesAverage = 72;
-		static float fps[framesAverage]{ 0.00001f }; for (int i = framesAverage - 1; i > 0; i--) fps[i] = fps[i - 1]; fps[0] = m_LastTs;
-		static float avg; avg = 0.0f; for (int i = 0; i < framesAverage; i++) avg += fps[i]; avg /= framesAverage;
-		ImGui::Text("%.1f FPS", 1.0f / avg );
-		ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
-		ImGui::Text("Quad count:   %i", Eis::Renderer2D::GetStats().QuadCount);
-		ImGui::Text("Circle count: %i", Eis::Renderer2D::GetStats().CircleCount);
-		ImGui::Text("Line count:   %i", Eis::Renderer2D::GetStats().LineCount);
-	} ImGui::End();
+	ImGui::Begin("Performance");
+	static uint32_t frames = 0; frames++;
+	static float elapsed = 0; elapsed += m_LastTs;
+	static float fps = 0.0f;
+
+	if (elapsed >= 0.1f)
+		fps = frames / elapsed, frames = 0, elapsed = 0.0f;
+
+	ImGui::Text("%.1f FPS", fps);
+	ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
+	ImGui::Text("Quad count:   %i", Eis::Renderer2D::GetStats().QuadCount);
+	ImGui::Text("Circle count: %i", Eis::Renderer2D::GetStats().CircleCount);
+	ImGui::Text("Line count:   %i", Eis::Renderer2D::GetStats().LineCount);
+	ImGui::End();
 
 	m_DemoManager.GetCurrentDemo().ImGuiRender();
 }

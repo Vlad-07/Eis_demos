@@ -7,26 +7,26 @@
 
 void World::Update()
 {
-	for (uint32_t y = 0; y < WorldSize.y; y++)
-	for (uint32_t x = 0; x < WorldSize.y; x++)
+	for (uint32_t y = 0; y < m_Mat.size(); y++)
+	for (uint32_t x = 0; x < m_Mat[0].size(); x++)
 	{
-		const auto& elementProp = Elements[(int8_t)At(x, y)];
+		const auto& elementProp = g_Elements[At(x, y)];
 
 		if (elementProp.Movable)
 		{
-			if (y > 0 && elementProp.Priority < Elements[(int8_t)At(x, y - 1)].Priority)
+			if (y > 0 && elementProp.Priority < g_Elements[At(x, y - 1)].Priority)
 				std::swap(m_Mat[y][x], m_Mat[y - 1][x]);
-			if (Eis::Random::UInt(0, 1) && y > 0 && x > 0 && elementProp.Priority < Elements[(int8_t)At(x - 1, y - 1)].Priority) // Random hack
+			if (Eis::Random::UInt(0, 1) && y > 0 && x > 0 && elementProp.Priority < g_Elements[At(x - 1, y - 1)].Priority) // Random hack
 				std::swap(m_Mat[y][x], m_Mat[y - 1][x - 1]);
-			if (y > 0 && x < WorldSize.x - 1 && elementProp.Priority < Elements[(int8_t)At(x + 1, y - 1)].Priority)
+			if (y > 0 && x < m_Mat[0].size() - 1 && elementProp.Priority < g_Elements[At(x + 1, y - 1)].Priority)
 				std::swap(m_Mat[y][x], m_Mat[y - 1][x + 1]);
 		}
 
 		if (elementProp.Liquid)
 		{
-			if (Eis::Random::UInt(0, 1) && x > 0 && elementProp.Priority < Elements[(int8_t)At(x - 1, y)].Priority)
+			if (Eis::Random::UInt(0, 1) && x > 0 && elementProp.Priority < g_Elements[At(x - 1, y)].Priority)
 				std::swap(m_Mat[y][x], m_Mat[y][x - 1]);
-			if (x < WorldSize.x - 1 && elementProp.Priority < Elements[(int8_t)At(x + 1, y)].Priority)
+			if (x < m_Mat[0].size() - 1 && elementProp.Priority < g_Elements[At(x + 1, y)].Priority)
 				std::swap(m_Mat[y][x], m_Mat[y][x + 1]);
 		}
 	}
@@ -34,7 +34,7 @@ void World::Update()
 
 void World::Clear()
 {
-	for (uint32_t y = 0; y < WorldSize.y; y++)
-	for (uint32_t x = 0; x < WorldSize.y; x++)
-		m_Mat[y][x] = Element::AIR;
+	for (uint32_t y = 0; y < m_Mat.size(); y++)
+	for (uint32_t x = 0; x < m_Mat[0].size(); x++)
+		m_Mat[y][x] = ElementId::AIR;
 }
