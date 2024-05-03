@@ -28,7 +28,7 @@ private:
 private:
 	Eis::OrthoCameraController m_CamController;
 	World m_World;
-	ElementId m_BrushElement;
+	ElementParams m_BrushElement;
 	float m_BrushSize;
 
 	// TODO: implement line brush when drag clicking

@@ -7,27 +7,43 @@
 
 void World::Update()
 {
-	for (uint32_t y = 0; y < m_Mat.size(); y++)
-	for (uint32_t x = 0; x < m_Mat[0].size(); x++)
+	for (int32_t y = m_Mat.size() - 1;    y >= 0; y--)
+	for (int32_t x = m_Mat[0].size() - 1; x >= 0; x--)
 	{
 		const auto& elementProp = g_Elements[At(x, y)];
 
-		if (elementProp.Movable)
+		if (elementProp.Movable && y > 0)
 		{
-			if (y > 0 && elementProp.Priority < g_Elements[At(x, y - 1)].Priority)
-				std::swap(m_Mat[y][x], m_Mat[y - 1][x]);
-			if (Eis::Random::UInt(0, 1) && y > 0 && x > 0 && elementProp.Priority < g_Elements[At(x - 1, y - 1)].Priority) // Random hack
-				std::swap(m_Mat[y][x], m_Mat[y - 1][x - 1]);
-			if (y > 0 && x < m_Mat[0].size() - 1 && elementProp.Priority < g_Elements[At(x + 1, y - 1)].Priority)
-				std::swap(m_Mat[y][x], m_Mat[y - 1][x + 1]);
+			if (elementProp.Priority < g_Elements[At(x, y - 1)].Priority)
+			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x]); continue; }
+
+
+			bool swap = Eis::Random::UInt(0, 1);
+			if (swap) goto _Second1;
+
+		_First1:
+			swap = false;
+			if (x > 0 && elementProp.Priority < g_Elements[At(x - 1, y - 1)].Priority)
+			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x - 1]); continue; }
+		_Second1:
+			if (x < m_Mat[0].size() - 1 && elementProp.Priority < g_Elements[At(x + 1, y - 1)].Priority)
+			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x + 1]); }
+			if (swap) goto _First1;
 		}
 
 		if (elementProp.Liquid)
 		{
-			if (Eis::Random::UInt(0, 1) && x > 0 && elementProp.Priority < g_Elements[At(x - 1, y)].Priority)
-				std::swap(m_Mat[y][x], m_Mat[y][x - 1]);
+			bool swap = Eis::Random::UInt(0, 1);
+			if (swap) goto _Second2;
+
+		_First2:
+			swap = false;
+			if (x > 0 && elementProp.Priority < g_Elements[At(x - 1, y)].Priority)
+			{ std::swap(m_Mat[y][x], m_Mat[y][x - 1]); continue; }
+		_Second2:
 			if (x < m_Mat[0].size() - 1 && elementProp.Priority < g_Elements[At(x + 1, y)].Priority)
-				std::swap(m_Mat[y][x], m_Mat[y][x + 1]);
+			{ std::swap(m_Mat[y][x], m_Mat[y][x + 1]); continue; }
+			if (swap) goto _First2;
 		}
 	}
 }
@@ -36,5 +52,5 @@ void World::Clear()
 {
 	for (uint32_t y = 0; y < m_Mat.size(); y++)
 	for (uint32_t x = 0; x < m_Mat[0].size(); x++)
-		m_Mat[y][x] = ElementId::AIR;
+		m_Mat[y][x].Reset();
 }

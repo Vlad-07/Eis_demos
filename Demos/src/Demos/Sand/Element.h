@@ -4,9 +4,24 @@
 #include <glm/glm.hpp>
 
 
-enum ElementId : uint8_t
+struct ElementParams
 {
-	AIR = 0, SAND, WATER, STONE
+public:
+	enum ID : uint8_t
+	{
+		AIR = 0, SAND = 1, WATER = 2, STONE = 3
+	};
+
+public:
+	ElementParams() : Id(ID::AIR), Temp(0.0f) {}
+	ElementParams(ID id) : Id(id), Temp(0.0f) {}
+	~ElementParams() = default;
+
+	void Reset() { Id = ID::AIR; Temp = 0.0f; }
+	operator uint8_t() const { return Id; }
+
+	ID Id;
+	float Temp;
 };
 
 struct ElementProps

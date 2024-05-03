@@ -2,7 +2,7 @@
 
 
 SandDemo::SandDemo(const std::string& name)
-	: Demo(name), m_CamController(16.0f / 9.0f), m_World(c_WorldSize), m_BrushElement(ElementId::SAND), m_BrushSize(1.0f)
+	: Demo(name), m_CamController(16.0f / 9.0f), m_World(c_WorldSize), m_BrushElement(ElementParams::ID::SAND), m_BrushSize(1.0f)
 {}
 
 void SandDemo::OnAttach()
@@ -27,7 +27,7 @@ void SandDemo::Update(Eis::TimeStep ts)
 	// Brush
 	if (Eis::Input::IsMouseButtonPressed(EIS_MOUSE_BUTTON_0))
 	{
-		if (mouseInBounds)
+		if (mouseInBounds && m_World.At(mousePos).Id == ElementParams::ID::AIR)
 			m_World.SetElement(mousePos, m_BrushElement);
 
 		m_BrushPressed = true;
@@ -40,7 +40,7 @@ void SandDemo::Update(Eis::TimeStep ts)
 	if (!m_BrushPressed && Eis::Input::IsMouseButtonPressed(EIS_MOUSE_BUTTON_1))
 	{
 		if (mouseInBounds)
-			m_World.SetElement(mousePos, ElementId::AIR);
+			m_World.SetElement(mousePos, ElementParams());
 
 		m_EraserPressed = true;
 		m_LastEraserPos = mousePos;
@@ -89,7 +89,7 @@ void SandDemo::ImGuiRender()
 				strcpy(name, g_Elements[i].Name);
 
 			if (ImGui::Button(name))
-				m_BrushElement = (ElementId)i;
+				m_BrushElement.Id = (ElementParams::ID)i;
 		}
 
 		ImGui::Separator();
