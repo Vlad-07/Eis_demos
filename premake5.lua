@@ -36,7 +36,7 @@ project "Demos"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-	
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -57,10 +57,9 @@ project "Demos"
 
 	links
 	{
-		"Eis",
-		"ImPlot"
+		"Eis"
 	}
-	
+
 	filter "system:windows"
 		systemversion "latest"
 
