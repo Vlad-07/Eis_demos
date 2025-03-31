@@ -1,12 +1,11 @@
 workspace "Demos"
-	architecture "x86_64"
 	startproject "Demos"
+	architecture "x86_64"
 
 	configurations
 	{
 		"Debug",
-		"Release",
-		"Distrib"
+		"Release"
 	}
 
 	flags
@@ -60,6 +59,11 @@ project "Demos"
 		"Eis"
 	}
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
 
@@ -70,10 +74,5 @@ project "Demos"
 
 	filter "configurations:Release"
 		defines "EIS_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Distrib"
-		defines "EIS_DISTRIB"
 		runtime "Release"
 		optimize "on"

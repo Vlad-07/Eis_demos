@@ -1,5 +1,7 @@
 #include "ChatHelper.h"
 
+#ifdef EIS_NETWORKING_ENABLE
+
 #include <Eis/Core/Log.h>
 
 
@@ -16,3 +18,5 @@ ChatHelper::~ChatHelper()
 {
 	s_Instance = nullptr;
 }
+
+#endif

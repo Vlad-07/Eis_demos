@@ -12,3 +12,8 @@ bin-int/
 *.sln
 *.json
 imgui.ini
+
+Makefile
+
+*.o
+*.tmp

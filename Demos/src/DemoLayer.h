@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Eis.h"
-
+#include <Eis.h>
 #include <imgui.h>
 #include <implot.h>
 

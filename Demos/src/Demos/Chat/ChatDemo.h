@@ -1,6 +1,8 @@
 #pragma once
 
-#define _CRT_SECURE_NO_WARNINGS
+#include <Eis/Core/Core.h>
+
+#ifdef EIS_NETWORKING_ENABLE
 
 #include <Eis.h>
 #include <imgui.h>
@@ -42,3 +44,5 @@ private:
 	} m_Conf;
 	char m_MessageBuf[512]{};
 };
+
+#endif

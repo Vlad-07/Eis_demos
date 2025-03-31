@@ -1,5 +1,6 @@
 #include "ChatDemo.h"
 
+#ifdef EIS_NETWORKING_ENABLE
 
 ChatDemo::ChatDemo(const std::string& name) : Demo(name), m_Conf()
 {
@@ -230,3 +231,5 @@ void ChatDemo::ImGuiRender()
 		ImGui::End();
 	}
 }
+
+#endif

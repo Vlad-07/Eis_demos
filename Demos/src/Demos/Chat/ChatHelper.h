@@ -1,5 +1,9 @@
 #pragma once
 
+#include <Eis/Core/Core.h>
+
+#ifdef EIS_NETWORKING_ENABLE
+
 #include <queue>
 #include <string>
 
@@ -20,3 +24,5 @@ public:
 private:
 	static ChatHelper* s_Instance;
 };
+
+#endif
