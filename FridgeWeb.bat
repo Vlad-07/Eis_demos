@@ -49,10 +49,8 @@ goto :fail
 		if not exist ".\bin\Release-web\ImGui" mkdir .\bin\Release-web\ImGui
 		if not exist ".\bin-int\Release-web\ImGui" mkdir .\bin-int\Release-web\ImGui
 
-	rem	.\backends\imgui_impl_glfw.h .\backends\imgui_impl_glfw.cpp .\backends\imgui_impl_opengl3.h .\backends\imgui_impl_opengl3.cpp .\backends\imgui_impl_opengl3_loader.h
-
-		call em++ .\imgui.cpp .\imgui_draw.cpp .\imgui_tables.cpp .\imgui_widgets.cpp -c -w -g --use-port=contrib.glfw3
-		call em++ .\imgui.o .\imgui_draw.o .\imgui_tables.o .\imgui_widgets.o -r -g -o .\bin-int\Release-web\ImGui\imgui.o
+		call em++ .\imgui.cpp .\imgui_draw.cpp .\imgui_tables.cpp .\imgui_widgets.cpp .\backends\imgui_impl_glfw.cpp .\backends\imgui_impl_opengl3.cpp -I .\ -c -g --use-port=contrib.glfw3
+		call em++ .\imgui.o .\imgui_draw.o .\imgui_tables.o .\imgui_widgets.o .\imgui_impl_glfw.o .\imgui_impl_opengl3.o -r -g -o .\bin-int\Release-web\ImGui\imgui.o
 
 		del *.o
 	) else echo Found imgui.o
@@ -99,7 +97,7 @@ goto :fail
 		:: Find STB files
 		for /f "delims=" %%x in ('dir /s /b /a-d .\vendor\*.cpp ^| findstr /i \\stb_') do set CPP=!CPP! %%x
 		:: Add Spdlog files
-		for /f %%x in ('dir /s /b /a-d .\vendor\spdlog\src\.cpp') do set CPP=!CPP! %%x
+		for /f %%x in ('dir /s /b /a-d .\vendor\spdlog\src\*.cpp') do set CPP=!CPP! %%x
 		set CPP=!CPP:~1!
 		set CPP=!CPP:C:\dev\Eis_demos\Eis=.!
 
@@ -130,14 +128,14 @@ goto :fail
 	for /f %%x in ('dir /b /a-d .\*.o') do set OBJ=!OBJ! %%x
 	set OBJ=!OBJ:~1!
 
-	call em++ %OBJ% -r -g -o .\bin-int\Release-web\%PROJECT%\%PROJECT%obj.o
-	move *.o .\bin-int\Release-web\%PROJECT% >nul
+	call em++ %OBJ% -r -g -o .\bin-int\Release-web\%PROJECT%\%PROJECT%.o
+	del *.o
 
 	:: Link
 	echo Linking project...
-	set OBJ=.\bin-int\Release-web\%PROJECT%\%PROJECT%obj.o .\Eis\bin-int\Release-web\Eis\eis.o .\Eis\vendor\GLAD\bin-int\Release-web\Glad\glad.o .\Eis\vendor\glm\bin-int\Release-web\glm\glm.o .\Eis\vendor\imgui\bin-int\Release-web\ImGui\imgui.o .\Eis\vendor\implot\bin-int\Release-web\ImPlot\implot.o
+	set OBJ=.\bin-int\Release-web\%PROJECT%\%PROJECT%.o .\Eis\bin-int\Release-web\Eis\eis.o .\Eis\vendor\GLAD\bin-int\Release-web\Glad\glad.o .\Eis\vendor\glm\bin-int\Release-web\glm\glm.o .\Eis\vendor\imgui\bin-int\Release-web\ImGui\imgui.o .\Eis\vendor\implot\bin-int\Release-web\ImPlot\implot.o
 
-	call em++ %OBJ% -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -g -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3
+	call em++ %OBJ% -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -g -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
 
 	echo Build completed
 	goto :success
