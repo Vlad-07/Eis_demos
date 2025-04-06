@@ -1,19 +1,23 @@
+:: Build tool for Web platform
+:: It mirrors the premake configurations
+:: Premake supports emscriptem build target but the setup is tricky and this will do for now
+
 @echo off
 
 setlocal enabledelayedexpansion enableextensions
 
 :: Location of Emscripten SDK (modify this)
-set EMSDK="C:\dev\C++\emscripten\emsdk\"
-:: Comment if you have troubles with emsdk
-set EMSDK_QUIET=1
+set EMSDK="C:\...\emsdk\"
 if not exist %EMSDK% (
 	echo Error: No Emscripten SDK folder found!
 	goto :fail
 )
 
+:: Comment if you have troubles with emsdk
+set EMSDK_QUIET=1
+
 set WORKINGDIR=%CD%
 
-:: Get project name
 set PROJECT=%1
 
 :: Run specified action
@@ -49,7 +53,7 @@ goto :fail
 		if not exist ".\bin\Release-web\ImGui" mkdir .\bin\Release-web\ImGui
 		if not exist ".\bin-int\Release-web\ImGui" mkdir .\bin-int\Release-web\ImGui
 
-		call em++ .\imgui.cpp .\imgui_draw.cpp .\imgui_tables.cpp .\imgui_widgets.cpp .\backends\imgui_impl_glfw.cpp .\backends\imgui_impl_opengl3.cpp -I .\ -c -g --use-port=contrib.glfw3
+		call em++ .\imgui.cpp .\imgui_draw.cpp .\imgui_tables.cpp .\imgui_widgets.cpp .\backends\imgui_impl_glfw.cpp .\backends\imgui_impl_opengl3.cpp -I .\ -c -g -w --use-port=contrib.glfw3
 		call em++ .\imgui.o .\imgui_draw.o .\imgui_tables.o .\imgui_widgets.o .\imgui_impl_glfw.o .\imgui_impl_opengl3.o -r -g -o .\bin-int\Release-web\ImGui\imgui.o
 
 		del *.o
@@ -75,13 +79,7 @@ goto :fail
 		if not exist ".\bin\Release-web\glm" mkdir .\bin\Release-web\glm
 		if not exist ".\bin-int\Release-web\glm" mkdir .\bin-int\Release-web\glm
 
-		:: Find GLM files
-		set CPP=
-		for /f %%x in ('dir /s /b /a-d .\glm\*.cpp') do set CPP=!CPP! %%x
-		set CPP=!CPP:~1!
-		set CPP=!CPP:C:\dev\Eis_demos\Eis\vendor\glm=.!
-		:: TODO relative path
-		call em++ !CPP! -I .\ -c -g -o .\bin-int\Release-web\glm\glm.o
+		call em++ .\glm\detail\glm.cpp -I .\ -c -g -o .\bin-int\Release-web\glm\glm.o
 	) else echo Found glm.o
 
 	:: Compile Eis
@@ -99,7 +97,7 @@ goto :fail
 		:: Add Spdlog files
 		for /f %%x in ('dir /s /b /a-d .\vendor\spdlog\src\*.cpp') do set CPP=!CPP! %%x
 		set CPP=!CPP:~1!
-		set CPP=!CPP:C:\dev\Eis_demos\Eis=.!
+		set CPP=!CPP:%CD%=.!
 
 		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -c -sTOTAL_STACK=512mb -g -w --use-port=contrib.glfw3
 
@@ -136,6 +134,8 @@ goto :fail
 	set OBJ=.\bin-int\Release-web\%PROJECT%\%PROJECT%.o .\Eis\bin-int\Release-web\Eis\eis.o .\Eis\vendor\GLAD\bin-int\Release-web\Glad\glad.o .\Eis\vendor\glm\bin-int\Release-web\glm\glm.o .\Eis\vendor\imgui\bin-int\Release-web\ImGui\imgui.o .\Eis\vendor\implot\bin-int\Release-web\ImPlot\implot.o
 
 	call em++ %OBJ% -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -g -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
+
+	copy /y .\template.html .\bin\Release-web\%PROJECT%\index.html >nul
 
 	echo Build completed
 	goto :success

@@ -1,23 +1,23 @@
 #include <Eis.h>
 #include <Eis/Core/EntryPoint.h>
 
-#include <imgui.h> // Should remove from sandbox aditional include dirs
+#include <imgui.h>
 
 #include "DemoLayer.h"
 
 
-class Sandbox : public Eis::Application
+class App : public Eis::Application
 {
 public:
-	Sandbox()
+	App()
 	{
 		PushLayer(new DemoLayer());
 	}
 
-	~Sandbox() = default;
+	~App() = default;
 };
 
 Eis::Application* Eis::CreateApplication()
 {
-	return new Sandbox();
+	return new App();
 }
