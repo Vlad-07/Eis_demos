@@ -23,6 +23,7 @@ set PROJECT=%1
 :: Run specified action
 if "%2"=="build" goto :build
 if "%2"=="run" goto :run
+if "%2"=="deploy" goto :deploy
 if "%2"=="clean" goto :clean
 if "%2"=="fullclean" goto :fullclean
 echo Error: Incorrect Input
@@ -150,6 +151,16 @@ goto :fail
 	)
 	emrun .\bin\Release-web\%PROJECT%\index.html
 	goto :success
+
+:deploy
+	if exist ".\bin\Release-web\%PROJECT%\index.html" (
+		if not exist ".\pages" mkdir pages
+		copy /y bin\Release-web\%PROJECT%\* .\pages >NUL
+		goto :success
+	) else (
+		echo Error: No index.html file found!
+		goto :fail
+	)
 
 :fullclean
 	if exist ".\Eis\vendor\glad\bin\Release-web" rmdir /s /q .\Eis\vendor\glad\bin\Release-web
