@@ -43,7 +43,7 @@ goto :fail
 		echo Compiling GLAD...
 		if not exist ".\bin\Release-web\Glad" mkdir .\bin\Release-web\Glad
 		if not exist ".\bin-int\Release-web\Glad" mkdir .\bin-int\Release-web\Glad
-		call emcc .\src\glad.c -I .\include -c -g -o .\bin-int\Release-web\Glad\glad.o
+		call emcc .\src\glad.c -I .\include -c -O3 -o .\bin-int\Release-web\Glad\glad.o
 	) else echo Found glad.o
 
 	:: ImGui
@@ -53,8 +53,8 @@ goto :fail
 		if not exist ".\bin\Release-web\ImGui" mkdir .\bin\Release-web\ImGui
 		if not exist ".\bin-int\Release-web\ImGui" mkdir .\bin-int\Release-web\ImGui
 
-		call em++ .\imgui.cpp .\imgui_draw.cpp .\imgui_tables.cpp .\imgui_widgets.cpp .\backends\imgui_impl_glfw.cpp .\backends\imgui_impl_opengl3.cpp -I .\ -c -g -w --use-port=contrib.glfw3
-		call em++ .\imgui.o .\imgui_draw.o .\imgui_tables.o .\imgui_widgets.o .\imgui_impl_glfw.o .\imgui_impl_opengl3.o -r -g -o .\bin-int\Release-web\ImGui\imgui.o
+		call em++ .\imgui.cpp .\imgui_draw.cpp .\imgui_tables.cpp .\imgui_widgets.cpp .\backends\imgui_impl_glfw.cpp .\backends\imgui_impl_opengl3.cpp -I .\ -c -O3 -w --use-port=contrib.glfw3
+		call em++ .\imgui.o .\imgui_draw.o .\imgui_tables.o .\imgui_widgets.o .\imgui_impl_glfw.o .\imgui_impl_opengl3.o -r -O3 -o .\bin-int\Release-web\ImGui\imgui.o
 
 		del *.o
 	) else echo Found imgui.o
@@ -66,8 +66,8 @@ goto :fail
 		if not exist ".\bin\Release-web\ImPlot" mkdir .\bin\Release-web\ImPlot
 		if not exist ".\bin-int\Release-web\ImPlot" mkdir .\bin-int\Release-web\ImPlot
 
-		call em++ .\implot.cpp .\implot_items.cpp -I ..\imgui -c -w -g --use-port=contrib.glfw3
-		call em++ .\implot.o .\implot_items.o -r -g -o .\bin-int\Release-web\ImPlot\implot.o
+		call em++ .\implot.cpp .\implot_items.cpp -I ..\imgui -c -w -O3 --use-port=contrib.glfw3
+		call em++ .\implot.o .\implot_items.o -r -O3 -o .\bin-int\Release-web\ImPlot\implot.o
 
 		del *.o
 	) else echo Found implot.o
@@ -79,7 +79,7 @@ goto :fail
 		if not exist ".\bin\Release-web\glm" mkdir .\bin\Release-web\glm
 		if not exist ".\bin-int\Release-web\glm" mkdir .\bin-int\Release-web\glm
 
-		call em++ .\glm\detail\glm.cpp -I .\ -c -g -o .\bin-int\Release-web\glm\glm.o
+		call em++ .\glm\detail\glm.cpp -I .\ -c -O3 -o .\bin-int\Release-web\glm\glm.o
 	) else echo Found glm.o
 
 	:: Compile Eis
@@ -99,13 +99,13 @@ goto :fail
 		set CPP=!CPP:~1!
 		set CPP=!CPP:%CD%=.!
 
-		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -c -sTOTAL_STACK=512mb -g -w --use-port=contrib.glfw3
+		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -c -sTOTAL_STACK=512mb -O3 -w --use-port=contrib.glfw3
 
 		set OBJ=
 		for /f %%x in ('dir /b /a-d .\*.o') do set OBJ=!OBJ! %%x
 		set OBJ=!OBJ:~1!
 
-		call em++ !OBJ! -r -sTOTAL_STACK=512mb -g -o .\bin-int\Release-web\Eis\eis.o
+		call em++ !OBJ! -r -sTOTAL_STACK=512mb -O3 -o .\bin-int\Release-web\Eis\eis.o
 
 		del *.o
 	) else echo Found eis.o
@@ -120,20 +120,20 @@ goto :fail
 	for /f %%x in ('dir /s /b /a-d .\%PROJECT%\*.cpp') do set CPP=!CPP! %%x
 	set CPP=%CPP:~1%
 
-	call em++ %CPP% -I .\%PROJECT%\src -I .\Eis\src -I .\Eis\vendor\spdlog\include -I .\Eis\vendor\imgui -I .\Eis\vendor\implot -I .\Eis\vendor\glm -DEIS_DEBUG -sTOTAL_STACK=512mb -c -w -g --use-port=contrib.glfw3
+	call em++ %CPP% -I .\%PROJECT%\src -I .\Eis\src -I .\Eis\vendor\spdlog\include -I .\Eis\vendor\imgui -I .\Eis\vendor\implot -I .\Eis\vendor\glm -DEIS_DEBUG -sTOTAL_STACK=512mb -c -w -O3 --use-port=contrib.glfw3
 
 	set OBJ=
 	for /f %%x in ('dir /b /a-d .\*.o') do set OBJ=!OBJ! %%x
 	set OBJ=!OBJ:~1!
 
-	call em++ %OBJ% -r -g -o .\bin-int\Release-web\%PROJECT%\%PROJECT%.o
+	call em++ %OBJ% -r -O3 -o .\bin-int\Release-web\%PROJECT%\%PROJECT%.o
 	del *.o
 
 	:: Link
 	echo Linking project...
 	set OBJ=.\bin-int\Release-web\%PROJECT%\%PROJECT%.o .\Eis\bin-int\Release-web\Eis\eis.o .\Eis\vendor\GLAD\bin-int\Release-web\Glad\glad.o .\Eis\vendor\glm\bin-int\Release-web\glm\glm.o .\Eis\vendor\imgui\bin-int\Release-web\ImGui\imgui.o .\Eis\vendor\implot\bin-int\Release-web\ImPlot\implot.o
 
-	call em++ %OBJ% -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -g -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
+	call em++ %OBJ% -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -O3 -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
 
 	copy /y .\template.html .\bin\Release-web\%PROJECT%\index.html >nul
 
