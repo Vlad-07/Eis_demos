@@ -1,7 +1,7 @@
 #include "OverviewDemo.h"
 
 OverviewDemo::OverviewDemo(const std::string& name)
-	: Demo(name), m_CameraController(16.0f / 9.0f), m_LineAngle(0.0f), m_CircleThickness(0.9f), m_CircleFade(0.1f)
+	: Demo(name), m_CameraController(), m_LineAngle(0.0f), m_CircleThickness(0.9f), m_CircleFade(0.1f)
 {}
 
 void OverviewDemo::OnAttach()

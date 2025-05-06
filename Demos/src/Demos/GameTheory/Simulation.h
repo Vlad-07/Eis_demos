@@ -87,7 +87,7 @@ namespace GameTheory
 	private:
 		std::vector<Subject> m_Subjects;
 		std::array<Table, TableNumber> m_Tables;
-		RewardMatrix m_RewardMatrix;
-		int m_Step;
+		RewardMatrix m_RewardMatrix{};
+		int m_Step = 0;
 	};
 }

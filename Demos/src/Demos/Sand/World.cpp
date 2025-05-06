@@ -7,8 +7,10 @@
 
 void World::Update()
 {
-	for (int32_t y = m_Mat.size() - 1;    y >= 0; y--)
-	for (int32_t x = m_Mat[0].size() - 1; x >= 0; x--)
+	EIS_PROFILE_FUNCTION();
+
+	for (uint32_t y = 0; y < m_Mat.size(); y++)
+	for (uint32_t x = 0; x < m_Mat[0].size(); x++)
 	{
 		const auto& elementProp = g_Elements[At(x, y)];
 
@@ -18,7 +20,7 @@ void World::Update()
 			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x]); continue; }
 
 
-			bool swap = Eis::Random::UInt(0, 1);
+			bool swap = Eis::Random::Bool();
 			if (swap) goto _Second1;
 
 		_First1:
@@ -27,13 +29,13 @@ void World::Update()
 			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x - 1]); continue; }
 		_Second1:
 			if (x < m_Mat[0].size() - 1 && elementProp.Priority < g_Elements[At(x + 1, y - 1)].Priority)
-			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x + 1]); }
+			{ std::swap(m_Mat[y][x], m_Mat[y - 1][x + 1]); continue; }
 			if (swap) goto _First1;
 		}
 
 		if (elementProp.Liquid)
 		{
-			bool swap = Eis::Random::UInt(0, 1);
+			bool swap = Eis::Random::Bool();
 			if (swap) goto _Second2;
 
 		_First2:
@@ -50,6 +52,8 @@ void World::Update()
 
 void World::Clear()
 {
+	EIS_PROFILE_FUNCTION();
+
 	for (uint32_t y = 0; y < m_Mat.size(); y++)
 	for (uint32_t x = 0; x < m_Mat[0].size(); x++)
 		m_Mat[y][x].Reset();

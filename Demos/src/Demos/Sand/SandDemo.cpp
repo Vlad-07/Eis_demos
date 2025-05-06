@@ -2,7 +2,7 @@
 
 
 SandDemo::SandDemo(const std::string& name)
-	: Demo(name), m_CamController(16.0f / 9.0f), m_World(c_WorldSize), m_BrushElement(ElementParams::ID::SAND), m_BrushSize(1.0f)
+	: Demo(name), m_CamController(), m_World(c_WorldSize), m_BrushElement(ElementParams::ID::SAND)
 {}
 
 void SandDemo::OnAttach()
@@ -12,12 +12,13 @@ void SandDemo::OnAttach()
 	m_CamController.SetZoom(10.5f);
 	m_CamController.SetZoomLock(true);
 	m_CamController.SetPosition(glm::vec3(glm::vec2(c_WorldSize) * (c_CellSize.x / 2.0f), 0.0f));
-
 }
 
 
 void SandDemo::Update(Eis::TimeStep ts)
 {
+	EIS_PROFILE_FUNCTION();
+
 	m_CamController.OnUpdate(ts);
 
 	// User Input

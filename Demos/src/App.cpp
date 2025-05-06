@@ -14,7 +14,7 @@ public:
 		PushLayer(new DemoLayer());
 	}
 
-	~App() = default;
+	virtual ~App() = default;
 };
 
 Eis::Application* Eis::CreateApplication()

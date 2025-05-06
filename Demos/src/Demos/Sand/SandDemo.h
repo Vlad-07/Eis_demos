@@ -1,7 +1,5 @@
 #pragma once
 
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <Eis.h>
 #include <imgui.h>
 
@@ -22,21 +20,20 @@ public:
 	virtual void OnEvent(Eis::Event& e) override;
 
 private:
-	const glm::vec<2, uint32_t> c_WorldSize = glm::vec2(302, 188);
-	const glm::vec2 c_CellSize = glm::vec2(0.1f);
-
-private:
 	Eis::OrthoCameraController m_CamController;
 	World m_World;
 	ElementParams m_BrushElement;
-	float m_BrushSize;
+	float m_BrushSize = 1.0f;
 
 	// TODO: implement line brush when drag clicking
-	bool m_BrushPressed{};
-	bool m_EraserPressed{};
+	bool m_BrushPressed = false;
+	bool m_EraserPressed = false;
 	glm::ivec2 m_LastBrushPos{};
 	glm::ivec2 m_LastEraserPos{};
 
+	float m_LastComputeTime = 0;
 
-	float m_LastComputeTime{};
+private:
+	static constexpr glm::vec<2, uint32_t> c_WorldSize = glm::vec2(302, 188);
+	static constexpr glm::vec2 c_CellSize = glm::vec2(0.1f);
 };

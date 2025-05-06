@@ -1,5 +1,6 @@
 #include "GameTheoryDemo.h"
 
+
 GTDemo::GTDemo(const std::string& name) : Demo(name) {}
 
 void GTDemo::OnAttach()
@@ -72,8 +73,8 @@ void GTDemo::ImGuiRender()
 		ImPlot::SetupAxes("Step * 0.1", "Ratio");
 		float i = 1.0f;
 		ImPlot::PlotInfLines("", &i, 1, ImPlotInfLinesFlags_Horizontal);
-		ImPlot::PlotShaded("B", m_xHistory.data(), m_yHistory.data(), m_yHistory.size(), 1.0);
-		ImPlot::PlotShaded("A", m_xHistory.data(), m_yHistory.data(), m_yHistory.size());
+		ImPlot::PlotShaded("B", m_xHistory.data(), m_yHistory.data(), (int)m_yHistory.size(), 1.0);
+		ImPlot::PlotShaded("A", m_xHistory.data(), m_yHistory.data(), (int)m_yHistory.size());
 		ImPlot::EndPlot();
 	}
 

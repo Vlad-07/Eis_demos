@@ -2,6 +2,7 @@
 
 #include <Eis/Core/Random.h>
 
+
 void GameTheory::Simulation::Init()
 {
 	m_Step = 0;
@@ -84,7 +85,7 @@ int GameTheory::Simulation::PickRandUnhandeledSubj() const
 
 	for (int retry = 0; id == -1 && retry < MaxPickRetries; retry++)
 	{
-		id = Eis::Random::UInt(0, m_Subjects.size() - 1);
+		id = Eis::Random::UInt(0, (uint32_t)m_Subjects.size() - 1);
 		if (m_Subjects[id].IsHandeled()) id = -1;
 	}
 

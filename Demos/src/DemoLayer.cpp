@@ -2,18 +2,18 @@
 
 
 DemoLayer::DemoLayer() : Layer("Demo"), m_DemoManager()
-{}
-
-void DemoLayer::OnAttach()
 {
-	EIS_PROFILE_FUNCTION();
-
-	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
 	m_DemoManager.LoadDemo(new SandDemo("Sand Demo"));
+	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
 	m_DemoManager.LoadDemo(new GTDemo("Game Theory"));
 #ifdef EIS_NETWORKING_ENABLE
 	m_DemoManager.LoadDemo(new ChatDemo("Chat Demo"));
 #endif
+}
+
+void DemoLayer::OnAttach()
+{
+	EIS_PROFILE_FUNCTION();
 
 	m_DemoManager.GetCurrentDemo().OnAttach();
 }
