@@ -24,6 +24,7 @@ class ChatDemo : public Demo
 {
 public:
 	ChatDemo(const std::string& name);
+	virtual ~ChatDemo() = default;
 
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;

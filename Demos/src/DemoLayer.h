@@ -6,9 +6,9 @@
 
 #include "DemoManager.h"
 #include "Demos/Overview/OverviewDemo.h"
-#include "Demos/GameTheory/GameTheoryDemo.h"
 #include "Demos/Sand/SandDemo.h"
 #include "Demos/Chat/ChatDemo.h"
+#include "Demos/Fractal/FractalDemo.h"
 
 
 class DemoLayer : public Eis::Layer

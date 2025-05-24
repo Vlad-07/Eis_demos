@@ -26,7 +26,7 @@ void SandDemo::Update(Eis::TimeStep ts)
 	bool mouseInBounds = mousePos.x < c_WorldSize.x && mousePos.y < c_WorldSize.y;
 
 	// Brush
-	if (Eis::Input::IsMouseButtonPressed(EIS_MOUSE_BUTTON_0))
+	if (Eis::Input::IsMouseButtonPressed(EIS_MOUSE_BUTTON_0) && !ImGui::GetIO().WantCaptureMouse)
 	{
 		if (mouseInBounds && m_World.At(mousePos).Id == ElementParams::ID::AIR)
 			m_World.SetElement(mousePos, m_BrushElement);

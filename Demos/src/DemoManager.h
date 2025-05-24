@@ -13,7 +13,7 @@ public:
 
 	void LoadDemo(Demo* demo) { m_Demos.push_back(demo); }
 
-	void SetCurrentDemo(int id) { m_CurrentDemoId = id; }
+	void SetCurrentDemo(int id) { if (id >= m_Demos.size()) EIS_ERROR("Invalid demo id!"); m_CurrentDemoId = id; }
 
 	Demo& GetCurrentDemo() { return *m_Demos[m_CurrentDemoId]; }
 	const std::vector<Demo*> GetDemos() const { return m_Demos; }

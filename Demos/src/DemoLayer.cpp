@@ -3,9 +3,11 @@
 
 DemoLayer::DemoLayer() : Layer("Demo"), m_DemoManager()
 {
-	m_DemoManager.LoadDemo(new SandDemo("Sand Demo"));
+	Eis::Application::Get().GetWindow().SetTitle("Eis Demos");
+
 	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
-	m_DemoManager.LoadDemo(new GTDemo("Game Theory"));
+	m_DemoManager.LoadDemo(new SandDemo("Sand Demo"));
+	m_DemoManager.LoadDemo(new FractalDemo("Fractal Demo"));
 #ifdef EIS_NETWORKING_ENABLE
 	m_DemoManager.LoadDemo(new ChatDemo("Chat Demo"));
 #endif
@@ -52,14 +54,14 @@ void DemoLayer::OnImGuiRender()
 	} ImGui::End();
 
 	ImGui::Begin("Performance");
+	// TODO: maybe a proper performance system?
 	static uint32_t frames = 0; frames++;
 	static float elapsed = 0; elapsed += m_LastTs;
 	static float fps = 0.0f;
-
-	if (elapsed >= 0.1f)
+	if (elapsed > 0.25f)
 		fps = frames / elapsed, frames = 0, elapsed = 0.0f;
 
-	ImGui::Text("%.1f FPS", fps);
+	ImGui::Text("%.1f FPS (%.5f ms)", fps, 1.0f / fps);
 	ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
 	ImGui::Text("Quad count:   %i", Eis::Renderer2D::GetStats().QuadCount);
 	ImGui::Text("Circle count: %i", Eis::Renderer2D::GetStats().CircleCount);

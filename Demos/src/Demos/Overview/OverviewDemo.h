@@ -12,7 +12,7 @@ class OverviewDemo : public Demo
 {
 public:
 	OverviewDemo(const std::string& name);
-	~OverviewDemo() = default;
+	virtual ~OverviewDemo() = default;
 
 	virtual void OnAttach() override;
 	virtual void Update(Eis::TimeStep ts) override;
