@@ -20,6 +20,8 @@
 // of Eis. From an application standpoint, it's terrible
 // Should be rewritten to demonstrate an actual architecture
 
+// TODO: whacky display because strings are not null terminated
+
 class ChatDemo : public Demo
 {
 public:

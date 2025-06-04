@@ -1,18 +1,16 @@
 #include "FractalDemo.h"
 
 
-FractalDemo::FractalDemo(const std::string& name) : Demo(name)
+FractalDemo::FractalDemo(const std::string& name) : Demo(name), m_FractalRenderer(m_CamController)
 {
-	m_FractalRenderer.SetCanvasSize(Eis::Application::Get().GetWindow().GetWidth(), Eis::Application::Get().GetWindow().GetHeight());
-	m_CamController.SetPoseLock(true);
-	m_CamController.SetZoomLock(true);
+	m_CamController.SetMinZoom(0);
 }
 
 
 void FractalDemo::OnAttach()
 {
-	Eis::RenderCommands::Disable(0x0B71); // GL_DEPTH_TEST
 	Eis::Renderer2D::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+	m_FractalRenderer.SetCanvasSize(Eis::Application::Get().GetWindow().GetWidth(), Eis::Application::Get().GetWindow().GetHeight());
 }
 
 
@@ -21,13 +19,6 @@ void FractalDemo::Update(Eis::TimeStep ts)
 	// Compute
 	m_CamController.OnUpdate(ts);
 
-	if (m_Auto)
-	{
-		static float sign = 1.0f;
-		m_Constant += glm::vec2(-0.001f, 0.001f) * sign;
-		if (m_Constant.x < 0.0f || m_Constant.x > 1.0f)
-			sign *= -1.0f;
-	}
 	m_FractalRenderer.Compute(m_Constant, m_MaxIt);
 
 	// Rendering
@@ -45,31 +36,31 @@ void FractalDemo::ImGuiRender()
 	ImGui::Begin("Julia Set");
 
 	ImGui::DragFloat2("Constant", (float*)&m_Constant, 0.0005f, -2.0f, 2.0f);
-	ImGui::SliderInt("Detail", &m_MaxIt, 50, 300);
+	ImGui::SliderInt("Detail", (int*)&m_MaxIt, 50, 300);
 
-	if (ImGui::Button("1"))
-		m_Constant = glm::vec2(-0.209f, 0.696f), m_MaxIt = 500;
+	uint8_t toLoad = 0;
+	if (ImGui::Button("1")) toLoad = 1;
 	ImGui::SameLine();
-	if (ImGui::Button("2"))
-		m_Constant = glm::vec2(-0.4f, 0.6f), m_MaxIt = 200;
+	if (ImGui::Button("2")) toLoad = 2;
 	ImGui::SameLine();
-	if (ImGui::Button("3"))
-		m_Constant = glm::vec2(-0.02f, 0.79f), m_MaxIt = 150;
+	if (ImGui::Button("3")) toLoad = 3;
 	ImGui::SameLine();
-	if (ImGui::Button("4"))
-		m_Constant = glm::vec2(-0.8f, 0.156f), m_MaxIt = 500;
+	if (ImGui::Button("4")) toLoad = 4;
 	ImGui::SameLine();
-	if (ImGui::Button("5"))
-		m_Constant = glm::vec2(0.35f, 0.358f), m_MaxIt = 500;
+	if (ImGui::Button("5")) toLoad = 5;
 	ImGui::SameLine();
-	if (ImGui::Button("6"))
-		m_Constant = glm::vec2(-0.21f, 0.79f), m_MaxIt = 400;
+	if (ImGui::Button("6")) toLoad = 6;
 	ImGui::SameLine();
-	if (ImGui::Button("7"))
-		m_Constant = glm::vec2(0.407f, 0.306f), m_MaxIt = 100;
+	if (ImGui::Button("7")) toLoad = 7;
 	ImGui::SameLine();
-	if (ImGui::Button("8"))
-		m_Constant = glm::vec2(-1.166f, -0.259f), m_MaxIt = 100;
+	if (ImGui::Button("8")) toLoad = 8;
+
+	if (toLoad > 0 && toLoad < s_FractalLib.size())
+	{
+		m_Constant = s_FractalLib[toLoad - 1].first;
+		m_MaxIt = s_FractalLib[toLoad - 1].second;
+		toLoad = 0;
+	}
 
 	ImGui::End();
 }

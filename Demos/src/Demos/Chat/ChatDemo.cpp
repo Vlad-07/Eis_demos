@@ -1,10 +1,10 @@
 #include "ChatDemo.h"
 
+
 #ifdef EIS_NETWORKING_ENABLE
 
-ChatDemo::ChatDemo(const std::string& name) : Demo(name), m_Conf()
-{
-}
+ChatDemo::ChatDemo(const std::string& name) : Demo(name), m_Conf() {}
+
 
 void ChatDemo::OnAttach()
 {
@@ -83,9 +83,8 @@ void ChatDemo::ImGuiRender()
 					ChatHelper::Get().m_MessageHistory.push_back(fmt::format("{} disconnected.", info.ConnectionDescription));
 					m_Server->SendStringToAllClients(fmt::format("{} disconnected.", info.ConnectionDescription), info.Id);
 				});
-				m_Server->SetDataReceivedCallback([this](const Eis::ClientInfo& info, Eis::Buffer& buf) {
+				m_Server->SetDataReceivedCallback([this](const Eis::ClientInfo& info, const Eis::Buffer& buf) {
 					m_Server->SendBufferToAllClients(buf, info.Id);
-					buf.AppendNull();
 					ChatHelper::Get().m_MessageHistory.push_back(buf.As<const char>());
 				});
 				m_Server->Start();
@@ -107,8 +106,7 @@ void ChatDemo::ImGuiRender()
 				m_Client->SetServerDisconnectedCallback([] {
 					ChatHelper::Get().m_MessageHistory.push_back("Disconnected from server.");
 				});
-				m_Client->SetDataReceivedCallback([](Eis::Buffer& buf) {
-					buf.AppendNull();
+				m_Client->SetDataReceivedCallback([](const Eis::Buffer& buf) {
 					ChatHelper::Get().m_MessageHistory.push_back(buf.As<const char>());
 				});
 				m_Client->ConnectToServer(m_Conf.ip);
@@ -136,7 +134,7 @@ void ChatDemo::ImGuiRender()
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 			for (const auto& item : m_ChatHelper.m_MessageHistory)
-				ImGui::TextUnformatted((item + '\n').c_str());
+				ImGui::TextUnformatted((item + "\0\n").c_str());
 
 			// Keep up at the bottom of the scroll region if we were already at the bottom at the beginning of the frame.
 			// Using a scrollbar or mouse-wheel will take away from the bottom edge.
@@ -156,16 +154,17 @@ void ChatDemo::ImGuiRender()
 			// Process known commands
 			if (m_Server)
 			{
-				if (strcmp(m_MessageBuf, "/help") == 0) //help
+				if (strcmp(m_MessageBuf, "/help") == 0)
 				{
 					m_ChatHelper.m_MessageHistory
-						.push_back("/help\nExample chat applivation - Vlad-07\n\n/help - Display this menu\n/stop - Stop the server\n");
+						.push_back("/help\nExample chat application - Vlad-07\n\n/help - Display this menu\n/stop - Stop the server\n");
 					goto _DONE;
 				}
 				else if (strcmp(m_MessageBuf, "/stop") == 0)
 				{
 					m_Server->Stop();
 					m_Server.reset();
+					m_ChatHelper.m_MessageHistory.clear();
 					goto _DONE;
 				}
 			}
@@ -205,6 +204,7 @@ void ChatDemo::ImGuiRender()
 				{
 					m_Client->Disconnect();
 					m_Client.reset();
+					m_ChatHelper.m_MessageHistory.clear();
 					goto _DONE;
 				}
 			}

@@ -7,8 +7,8 @@
 #include "DemoManager.h"
 #include "Demos/Overview/OverviewDemo.h"
 #include "Demos/Sand/SandDemo.h"
-#include "Demos/Chat/ChatDemo.h"
 #include "Demos/Fractal/FractalDemo.h"
+#include "Demos/Chat/ChatDemo.h"
 
 
 class DemoLayer : public Eis::Layer

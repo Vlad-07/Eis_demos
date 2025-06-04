@@ -61,7 +61,7 @@ void DemoLayer::OnImGuiRender()
 	if (elapsed > 0.25f)
 		fps = frames / elapsed, frames = 0, elapsed = 0.0f;
 
-	ImGui::Text("%.1f FPS (%.5f ms)", fps, 1.0f / fps);
+	ImGui::Text("%.1f FPS (%.3f ms)", fps, 1000.0f / fps);
 	ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
 	ImGui::Text("Quad count:   %i", Eis::Renderer2D::GetStats().QuadCount);
 	ImGui::Text("Circle count: %i", Eis::Renderer2D::GetStats().CircleCount);
