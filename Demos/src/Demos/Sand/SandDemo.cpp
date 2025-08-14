@@ -100,7 +100,7 @@ void SandDemo::ImGuiRender()
 
 		ImGui::Separator();
 
-		ImGui::Text("%.3f TPS", 1.0f / m_LastComputeTime); // might be broken
+		ImGui::Text("%.3f TPS", 1.0f / m_LastComputeTime);
 	} ImGui::End();
 }
 

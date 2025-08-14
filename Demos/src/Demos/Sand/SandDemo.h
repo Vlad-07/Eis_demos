@@ -11,7 +11,7 @@ class SandDemo : public Demo
 {
 public:
 	SandDemo(const std::string& name);
-	~SandDemo() = default;
+	virtual ~SandDemo() = default;
 
 	virtual void OnAttach() override;
 

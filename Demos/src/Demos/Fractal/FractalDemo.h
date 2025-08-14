@@ -36,7 +36,4 @@ private:
 		std::make_pair(glm::vec2(0.407f, 0.306f), 100),
 		std::make_pair(glm::vec2(-1.166f, -0.259f), 100)
 	};
-
-private:
-	static constexpr uint32_t c_DroneNr = 10;
 };

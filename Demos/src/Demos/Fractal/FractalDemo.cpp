@@ -3,13 +3,13 @@
 
 FractalDemo::FractalDemo(const std::string& name) : Demo(name), m_FractalRenderer(m_CamController)
 {
-	m_CamController.SetMinZoom(0);
 }
 
 
 void FractalDemo::OnAttach()
 {
 	Eis::Renderer2D::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+	m_CamController.SetMinZoom(0.0f);
 	m_FractalRenderer.SetCanvasSize(Eis::Application::Get().GetWindow().GetWidth(), Eis::Application::Get().GetWindow().GetHeight());
 }
 
