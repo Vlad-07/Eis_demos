@@ -21,4 +21,7 @@ public:
 
 private:
 	Eis::OrthoCameraController m_CamController;
+
+	bool m_DrawVertices = false;
+	bool m_DrawBB = false;
 };
