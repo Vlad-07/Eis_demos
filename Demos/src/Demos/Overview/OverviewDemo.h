@@ -6,8 +6,8 @@
 
 #include "Demos/Demo.h"
 
+// Demos landing. Whacky conglomerate of everything
 
-// Also a graphic unit test for Eis
 class OverviewDemo : public Demo
 {
 public:

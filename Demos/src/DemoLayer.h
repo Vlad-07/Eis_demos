@@ -13,7 +13,7 @@
 
 
 // Various demos, mini-projects I worked on,
-// demonstrating the capabilities of Eis and acting like 'unit tests'.
+// demonstrating the capabilities of Eis and act like 'unit tests'.
 
 class DemoLayer : public Eis::Layer
 {

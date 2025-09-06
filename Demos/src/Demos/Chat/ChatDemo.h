@@ -16,11 +16,11 @@
 
 
 // Chat app demo
-// It's purpose is to showcase the networing capabilities
+// It's purpose is to showcase the networking capabilities
 // of Eis. From an application standpoint, it's terrible
-// Should be rewritten to demonstrate an actual architecture
+// Should be rewritten to demonstrate an actual architecture // no just check out Sot2D when it goes public
 
-// TODO: whacky display because strings are not null terminated
+// TODO: whacky display because strings are not null terminated?
 
 class ChatDemo : public Demo
 {

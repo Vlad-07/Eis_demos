@@ -6,6 +6,8 @@
 
 #include "Demos/Demo.h"
 
+// Showcase of the physics 'engine'
+// Should have used Box2D
 
 class PhysicsDemo : public Demo
 {
@@ -22,6 +24,10 @@ public:
 private:
 	Eis::OrthoCameraController m_CamController;
 
+	std::vector<glm::vec4> m_Colors; // HACK: no ecs so colors are stored in here
+									 // should make a entity class (until ECS is implemented)
+
 	bool m_DrawVertices = false;
 	bool m_DrawBB = false;
+	bool m_DrawCircleLine = true;
 };
