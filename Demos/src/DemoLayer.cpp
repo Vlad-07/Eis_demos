@@ -6,7 +6,6 @@ DemoLayer::DemoLayer() : Layer("Demo"), m_DemoManager()
 	Eis::Application::Get().GetWindow().SetTitle("Eis Demos");
 
 	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
-	m_DemoManager.LoadDemo(new FractalDemo("Fractal Demo"));
 	m_DemoManager.LoadDemo(new PhysicsDemo("Physics Demo"));
 	m_DemoManager.LoadDemo(new SandDemo("Sand Demo"));
 #ifdef EIS_NETWORKING_ENABLE

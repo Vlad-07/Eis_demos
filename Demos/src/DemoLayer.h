@@ -8,7 +8,6 @@
 #include "Demos/Overview/OverviewDemo.h"
 #include "Demos/Physics/PhysicsDemo.h"
 #include "Demos/Sand/SandDemo.h"
-#include "Demos/Fractal/FractalDemo.h"
 #include "Demos/Chat/ChatDemo.h"
 
 

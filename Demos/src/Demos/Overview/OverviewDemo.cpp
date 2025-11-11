@@ -11,7 +11,6 @@ void OverviewDemo::OnAttach()
 	mouce = Eis::Texture2D::Create("assets/textures/mouce.png");
 	EIS_TRACE("Done loading assets.");
 
-	Eis::RenderCommands::Disable(0x0B71); // GL_DEPTH_TEST
 	Eis::Renderer2D::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 }
 
@@ -39,11 +38,12 @@ void OverviewDemo::Update(Eis::TimeStep ts)
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 0.0f), glm::vec2(1.0f), rot, mouce);
 
 		static float x = 0.0f, fact = 1.0f;
+		if (x > 2.0f)		fact *= -1, x =  2.0f;
+		else if (x < -2.0f) fact *= -1, x = -2.0f;
 		Eis::Renderer2D::DrawCircle(glm::vec2(x += ts * fact, 1.0f), glm::vec2(1.0f), glm::vec4(1, 1, 0, 1), m_CircleThickness, m_CircleFade);
-		if (x > 2.0f || x < -2.0f) fact *= -1;
 
-		Eis::Renderer2D::DrawLine(glm::vec2(1.0f, 0.0f), m_LineAngle, 0.5f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 		m_LineAngle += 100.0f * ts; if (m_LineAngle > 360.0f) m_LineAngle -= 360.0f;
+		Eis::Renderer2D::DrawLine(glm::vec2(1.0f, 0.0f), m_LineAngle, 0.5f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
 		Eis::Renderer2D::EndScene();
 	}

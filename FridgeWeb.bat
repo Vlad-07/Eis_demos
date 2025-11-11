@@ -1,6 +1,7 @@
 :: Build tool for Web platform
 :: It mirrors the premake configurations
 :: Premake supports emscriptem build target but the setup is tricky and this will do for now
+:: TODO: use premake...
 
 @echo off
 
