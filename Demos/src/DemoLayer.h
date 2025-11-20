@@ -20,11 +20,11 @@ public:
 	DemoLayer();
 	virtual ~DemoLayer() = default;
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
+	virtual void Attach() override;
+	virtual void Detach() override;
 
-	virtual void OnUpdate(Eis::TimeStep ts) override;
-	virtual void OnImGuiRender() override;
+	virtual void Update(Eis::TimeStep ts) override;
+	virtual void ImGuiRender() override;
 	virtual void OnEvent(Eis::Event& e) override;
 
 private:

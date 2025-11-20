@@ -1,4 +1,4 @@
-#type vertex
+//type vertex
 #version 300 es
 precision mediump float;
 
@@ -24,7 +24,7 @@ void main()
 	gl_Position = u_VP * vec4(a_Position, 1.0);
 }
 
-#type fragment
+//type fragment
 #version 300 es
 precision mediump float;
 

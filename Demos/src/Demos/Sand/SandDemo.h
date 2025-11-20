@@ -13,7 +13,7 @@ public:
 	SandDemo(const std::string& name);
 	virtual ~SandDemo() = default;
 
-	virtual void OnAttach() override;
+	virtual void Attach() override;
 
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;

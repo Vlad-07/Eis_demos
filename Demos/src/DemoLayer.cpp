@@ -13,28 +13,28 @@ DemoLayer::DemoLayer() : Layer("Demo"), m_DemoManager()
 #endif
 }
 
-void DemoLayer::OnAttach()
+void DemoLayer::Attach()
 {
 	EIS_PROFILE_FUNCTION();
 
-	m_DemoManager.GetCurrentDemo().OnAttach();
+	m_DemoManager.GetCurrentDemo().Attach();
 }
 
-void DemoLayer::OnDetach()
+void DemoLayer::Detach()
 {
 	EIS_PROFILE_FUNCTION();
-	m_DemoManager.GetCurrentDemo().OnDetach();
+	m_DemoManager.GetCurrentDemo().Detach();
 }
 
 
-void DemoLayer::OnUpdate(Eis::TimeStep ts)
+void DemoLayer::Update(Eis::TimeStep ts)
 {
 	EIS_PROFILE_FUNCTION();
 	m_LastTs = ts;
 	m_DemoManager.GetCurrentDemo().Update(ts);
 }
 
-void DemoLayer::OnImGuiRender()
+void DemoLayer::ImGuiRender()
 {
 	EIS_PROFILE_FUNCTION();
 
@@ -43,11 +43,11 @@ void DemoLayer::OnImGuiRender()
 		{
 			if (ImGui::Button(m_DemoManager.GetDemos()[i]->GetName().c_str()) && i != m_DemoManager.GetCurrentDemoId())
 			{
-				m_DemoManager.GetCurrentDemo().OnDetach();
+				m_DemoManager.GetCurrentDemo().Detach();
 				m_DemoManager.SetCurrentDemo(i);
 				Eis::Renderer2D::ResetStats();
 				EIS_INFO("Selected {0} demo", m_DemoManager.GetCurrentDemo().GetName());
-				m_DemoManager.GetCurrentDemo().OnAttach();
+				m_DemoManager.GetCurrentDemo().Attach();
 			}
 		}
 		if (ImGui::Button("Quit")) Eis::Application::ShouldClose();

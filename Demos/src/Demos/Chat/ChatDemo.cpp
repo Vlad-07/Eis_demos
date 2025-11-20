@@ -6,8 +6,10 @@
 ChatDemo::ChatDemo(const std::string& name) : Demo(name), m_Conf() {}
 
 
-void ChatDemo::OnAttach()
+void ChatDemo::Attach()
 {
+	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
+
 	m_Conf = { false, false, 8000, "127.0.0.1:8000" };
 	m_ChatHelper.m_MessageHistory.clear();
 	strcpy(m_ChatHelper.m_OwnNick, "User");
@@ -19,7 +21,7 @@ void ChatDemo::OnAttach()
 	strcat(m_ChatHelper.m_OwnNick, c);
 }
 
-void ChatDemo::OnDetach()
+void ChatDemo::Detach()
 {
 	if (m_Server)
 	{

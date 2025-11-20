@@ -28,8 +28,8 @@ public:
 	ChatDemo(const std::string& name);
 	virtual ~ChatDemo() = default;
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
+	virtual void Attach() override;
+	virtual void Detach() override;
 
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;

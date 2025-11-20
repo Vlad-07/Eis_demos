@@ -4,19 +4,19 @@ OverviewDemo::OverviewDemo(const std::string& name)
 	: Demo(name), m_CameraController(), m_LineAngle(0.0f), m_CircleThickness(0.9f), m_CircleFade(0.1f)
 {}
 
-void OverviewDemo::OnAttach()
+void OverviewDemo::Attach()
 {
 	EIS_TRACE("Loading assets...");
 	ice = Eis::Texture2D::Create("assets/textures/ice.png");
 	mouce = Eis::Texture2D::Create("assets/textures/mouce.png");
 	EIS_TRACE("Done loading assets.");
 
-	Eis::Renderer2D::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
 }
 
 void OverviewDemo::Update(Eis::TimeStep ts)
 {
-	m_CameraController.OnUpdate(ts);
+	m_CameraController.Update(ts);
 
 	{
 		EIS_PROFILE_SCOPE("Renderer Prep");

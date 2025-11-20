@@ -5,9 +5,9 @@ SandDemo::SandDemo(const std::string& name)
 	: Demo(name), m_CamController(), m_World(c_WorldSize), m_BrushElement(ElementParams::ID::SAND)
 {}
 
-void SandDemo::OnAttach()
+void SandDemo::Attach()
 {
-	Eis::Renderer2D::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+	Eis::Renderer2D::SetClearColor(glm::vec3(0.0f));
 	m_CamController.SetMaxZoom(100.0f);
 	m_CamController.SetZoom(10.5f);
 	m_CamController.SetZoomLock(true);
@@ -19,7 +19,7 @@ void SandDemo::Update(Eis::TimeStep ts)
 {
 	EIS_PROFILE_FUNCTION();
 
-	m_CamController.OnUpdate(ts);
+	m_CamController.Update(ts);
 
 	// User Input
 	glm::vec<2, uint32_t> mousePos = m_CamController.CalculateMouseWorldPos() * 10.0f + glm::vec2(0.5f);

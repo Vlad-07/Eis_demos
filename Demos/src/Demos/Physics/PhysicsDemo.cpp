@@ -18,9 +18,9 @@ PhysicsDemo::PhysicsDemo(const std::string& name) : Demo(name)
 	}
 }
 
-void PhysicsDemo::OnAttach()
+void PhysicsDemo::Attach()
 {
-	Eis::Renderer2D::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
 	Eis::Renderer2D::SetLineWidth(1.0f);
 	Eis::Application::Get().GetWindow().SetVSync(false);
 }
@@ -28,7 +28,7 @@ void PhysicsDemo::OnAttach()
 void PhysicsDemo::Update(Eis::TimeStep ts)
 {
 	// Compute
-	m_CamController.OnUpdate(ts);
+	m_CamController.Update(ts);
 
 	// Despawn fallen objects
 	for (uint32_t i = 0; i < Eis::PhysicsManager2D::GetBodyCount(); i++)

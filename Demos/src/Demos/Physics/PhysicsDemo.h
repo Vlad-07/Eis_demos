@@ -15,7 +15,7 @@ public:
 	PhysicsDemo(const std::string& name);
 	virtual ~PhysicsDemo() = default;
 
-	virtual void OnAttach() override;
+	virtual void Attach() override;
 
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;

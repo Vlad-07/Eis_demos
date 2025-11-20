@@ -7,8 +7,8 @@ public:
 	Demo(const std::string& name) : m_Name(name) {}
 	virtual ~Demo() = default;
 
-	virtual void OnAttach() {}
-	virtual void OnDetach() {}
+	virtual void Attach() {}
+	virtual void Detach() {}
 
 	virtual void Update(Eis::TimeStep) {}
 	virtual void ImGuiRender() {}

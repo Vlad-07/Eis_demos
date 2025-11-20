@@ -1,4 +1,4 @@
-#type vertex
+//type vertex
 #version 300 es
 precision mediump float;
 
@@ -16,7 +16,7 @@ void main()
 }
 
 
-#type fragment
+//type fragment
 #version 300 es
 precision mediump float;
 

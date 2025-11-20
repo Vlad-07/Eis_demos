@@ -1,4 +1,4 @@
-#type vertex
+//type vertex
 #version 450 core
 
 layout(location = 0) in vec3 a_WorldPosition;
@@ -24,7 +24,7 @@ void main()
 }
 
 
-#type fragment
+//type fragment
 #version 450 core
 
 layout(location = 0) out vec4 o_Color;
