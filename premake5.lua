@@ -64,6 +64,9 @@ project "Demos"
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 
+	filter "toolset:msc*"
+		buildoptions { "/utf-8" }
+
 	filter "system:windows"
 		systemversion "latest"
 

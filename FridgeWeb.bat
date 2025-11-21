@@ -101,7 +101,7 @@ goto :fail
 		set CPP=!CPP:~1!
 		set CPP=!CPP:%CD%=.!
 
-		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -c -sTOTAL_STACK=512mb -O3 -w --use-port=contrib.glfw3
+		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -DGLM_ENABLE_EXPERIMENTAL -c -sTOTAL_STACK=512mb -O3 -w --use-port=contrib.glfw3
 
 		set OBJ=
 		for /f %%x in ('dir /b /a-d .\*.o') do set OBJ=!OBJ! %%x

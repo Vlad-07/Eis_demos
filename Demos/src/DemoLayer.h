@@ -14,6 +14,8 @@
 // Various demos, mini-projects I worked on,
 // demonstrating the capabilities of Eis and act like 'unit tests'.
 
+// BUG: resizing window between demos causes stretching
+
 class DemoLayer : public Eis::Layer
 {
 public:
