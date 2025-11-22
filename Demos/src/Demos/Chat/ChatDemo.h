@@ -34,6 +34,8 @@ public:
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;
 
+	virtual void OnEvent(Eis::Event& e) override {}
+
 private:
 	Eis::Scope<Eis::Server> m_Server; // Normally you should write sepparate
 	Eis::Scope<Eis::Client> m_Client; // apps for the server and the client

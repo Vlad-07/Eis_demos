@@ -16,9 +16,12 @@ public:
 	virtual ~PhysicsDemo() = default;
 
 	virtual void Attach() override;
+	virtual void Detach() override;
 
 	virtual void Update(Eis::TimeStep ts) override;
+	virtual void Render() override;
 	virtual void ImGuiRender() override;
+
 	virtual void OnEvent(Eis::Event& e) override;
 
 private:

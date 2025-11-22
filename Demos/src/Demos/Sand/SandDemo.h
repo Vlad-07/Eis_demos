@@ -17,6 +17,7 @@ public:
 
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;
+
 	virtual void OnEvent(Eis::Event& e) override;
 
 private:

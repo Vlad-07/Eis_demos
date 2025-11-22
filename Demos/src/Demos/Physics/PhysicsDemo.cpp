@@ -5,18 +5,20 @@ PhysicsDemo::PhysicsDemo(const std::string& name) : Demo(name)
 {
 	m_CamController.SetPoseLock(true);
 	m_CamController.SetMaxZoom(100);
+	m_CamController.SetZoom(15.0f);
 
 	Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(40.0f, 1.0f), 0, 0.3f, true);
 	m_Colors.emplace_back(glm::vec4(0.2f, 0.85f, 0.2f, 1.0f));
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 40; i++)
 	{
 		if (i % 2)
-			Eis::PhysicsManager2D::AddBody(Eis::Random::Vec2(-1.0f, 5.0f), Eis::Random::Float(0.3f, 0.7f), 1.0f, 0.5f);
+			Eis::PhysicsManager2D::AddBody({ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 5.0f) }, Eis::Random::Float(0.3f, 0.7f), 1.0f, 0.5f);
 		else
-			Eis::PhysicsManager2D::AddBody({ Eis::Random::Float(-5.0f, 5.0f), Eis::Random::Float(0, 50) }, 0, Eis::Random::Vec2(0.7f, 1.3f), 1.0f, 0.5f);
+			Eis::PhysicsManager2D::AddBody({ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(7.0f, 15.0f) }, 0, Eis::Random::Vec2(0.7f, 1.3f), 1.0f, 0.5f);
 		m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
 	}
 }
+
 
 void PhysicsDemo::Attach()
 {
@@ -25,9 +27,14 @@ void PhysicsDemo::Attach()
 	Eis::Application::Get().GetWindow().SetVSync(false);
 }
 
+void PhysicsDemo::Detach()
+{
+	Eis::Application::Get().GetWindow().SetVSync(true);
+}
+
+
 void PhysicsDemo::Update(Eis::TimeStep ts)
 {
-	// Compute
 	m_CamController.Update(ts);
 
 	// Despawn fallen objects
@@ -40,11 +47,11 @@ void PhysicsDemo::Update(Eis::TimeStep ts)
 		}
 	}
 
+	Eis::PhysicsManager2D::Update(15, ts);
+}
 
-	Eis::PhysicsManager2D::Update(20, ts);
-
-
-	// Rendering
+void PhysicsDemo::Render()
+{
 	Eis::Renderer2D::Clear();
 	Eis::Renderer2D::ResetStats();
 	Eis::Renderer2D::BeginScene(m_CamController.GetCamera());

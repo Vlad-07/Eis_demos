@@ -6,6 +6,7 @@
 
 #include "Demos/Demo.h"
 
+
 // Demos landing. Whacky conglomerate of everything
 
 class OverviewDemo : public Demo
@@ -15,8 +16,11 @@ public:
 	virtual ~OverviewDemo() = default;
 
 	virtual void Attach() override;
+	virtual void Detach() override;
+
 	virtual void Update(Eis::TimeStep ts) override;
 	virtual void ImGuiRender() override;
+
 	virtual void OnEvent(Eis::Event& e) override;
 
 private:

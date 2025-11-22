@@ -14,6 +14,12 @@ void OverviewDemo::Attach()
 	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
 }
 
+void OverviewDemo::Detach()
+{
+	ice.reset();
+	mouce.reset();
+}
+
 void OverviewDemo::Update(Eis::TimeStep ts)
 {
 	m_CameraController.Update(ts);

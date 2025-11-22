@@ -5,11 +5,11 @@ DemoLayer::DemoLayer() : Layer("Demo"), m_DemoManager()
 {
 	Eis::Application::Get().GetWindow().SetTitle("Eis Demos");
 
-	m_DemoManager.LoadDemo(new OverviewDemo("Overview"));
-	m_DemoManager.LoadDemo(new PhysicsDemo("Physics Demo"));
-	m_DemoManager.LoadDemo(new SandDemo("Sand Demo"));
+	m_DemoManager.LoadDemo<OverviewDemo>("Overview");
+	m_DemoManager.LoadDemo<PhysicsDemo>("Physics Demo");
+	m_DemoManager.LoadDemo<SandDemo>("Sand Demo");
 #ifdef EIS_NETWORKING_ENABLE
-	m_DemoManager.LoadDemo(new ChatDemo("Chat Demo"));
+	m_DemoManager.LoadDemo<ChatDemo>("Chat Demo");
 #endif
 }
 
@@ -23,6 +23,7 @@ void DemoLayer::Attach()
 void DemoLayer::Detach()
 {
 	EIS_PROFILE_FUNCTION();
+
 	m_DemoManager.GetCurrentDemo().Detach();
 }
 
@@ -30,8 +31,16 @@ void DemoLayer::Detach()
 void DemoLayer::Update(Eis::TimeStep ts)
 {
 	EIS_PROFILE_FUNCTION();
-	m_LastTs = ts;
+
 	m_DemoManager.GetCurrentDemo().Update(ts);
+	m_LastTs = ts;
+}
+
+void DemoLayer::Render()
+{
+	EIS_PROFILE_FUNCTION();
+
+	m_DemoManager.GetCurrentDemo().Render();
 }
 
 void DemoLayer::ImGuiRender()
@@ -50,7 +59,9 @@ void DemoLayer::ImGuiRender()
 				m_DemoManager.GetCurrentDemo().Attach();
 			}
 		}
+#ifndef EIS_PLATFORM_WEB
 		if (ImGui::Button("Quit")) Eis::Application::ShouldClose();
+#endif
 	} ImGui::End();
 
 	ImGui::Begin("Performance");
@@ -74,6 +85,15 @@ void DemoLayer::ImGuiRender()
 void DemoLayer::OnEvent(Eis::Event& e)
 {
 	EIS_PROFILE_FUNCTION();
+
+	// MVPs must be updated for all demo's cameras
+	// other events *might* need to be propagated to all demos
+	if (e.IsType(Eis::EventType::WindowResize))
+	{
+		for (Eis::Scope<Demo>& demo : m_DemoManager.GetDemos())
+			demo->OnEvent(e);
+		return;
+	}
 
 	m_DemoManager.GetCurrentDemo().OnEvent(e);
 }
