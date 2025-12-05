@@ -101,13 +101,13 @@ goto :fail
 		set CPP=!CPP:~1!
 		set CPP=!CPP:%CD%=.!
 
-		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -DGLM_ENABLE_EXPERIMENTAL -c -sTOTAL_STACK=512mb -O3 -w --use-port=contrib.glfw3
+		call em++ !CPP! -I.\src -I.\vendor\Glad\include -I.\vendor\imgui -I.\vendor\implot -I.\vendor\glm -I.\vendor\spdlog\include -I.\vendor\stb_image -I.\vendor\stb_image_write -I.\vendor\stb_image_resize -DGLFW_INCLUDE_NONE -DEIS_DEBUG -DSPDLOG_COMPILED_LIB -DGLM_ENABLE_EXPERIMENTAL -c -O3 -w --use-port=contrib.glfw3
 
 		set OBJ=
 		for /f %%x in ('dir /b /a-d .\*.o') do set OBJ=!OBJ! %%x
 		set OBJ=!OBJ:~1!
 
-		call em++ !OBJ! -r -sTOTAL_STACK=512mb -O3 -o .\bin-int\Release-web\Eis\eis.o
+		call em++ !OBJ! -r -O3 -o .\bin-int\Release-web\Eis\eis.o
 
 		del *.o
 	) else echo Found eis.o
@@ -122,7 +122,7 @@ goto :fail
 	for /f %%x in ('dir /s /b /a-d .\%PROJECT%\*.cpp') do set CPP=!CPP! %%x
 	set CPP=%CPP:~1%
 
-	call em++ %CPP% -I .\%PROJECT%\src -I .\Eis\src -I .\Eis\vendor\spdlog\include -I .\Eis\vendor\imgui -I .\Eis\vendor\implot -I .\Eis\vendor\glm -DEIS_DEBUG -sTOTAL_STACK=512mb -c -w -O3 --use-port=contrib.glfw3
+	call em++ %CPP% -I .\%PROJECT%\src -I .\Eis\src -I .\Eis\vendor\spdlog\include -I .\Eis\vendor\imgui -I .\Eis\vendor\implot -I .\Eis\vendor\glm -DEIS_DEBUG -c -w -O3 --use-port=contrib.glfw3
 
 	set OBJ=
 	for /f %%x in ('dir /b /a-d .\*.o') do set OBJ=!OBJ! %%x
@@ -135,7 +135,7 @@ goto :fail
 	echo Linking project...
 	set OBJ=.\bin-int\Release-web\%PROJECT%\%PROJECT%.o .\Eis\bin-int\Release-web\Eis\eis.o .\Eis\vendor\GLAD\bin-int\Release-web\Glad\glad.o .\Eis\vendor\glm\bin-int\Release-web\glm\glm.o .\Eis\vendor\imgui\bin-int\Release-web\ImGui\imgui.o .\Eis\vendor\implot\bin-int\Release-web\ImPlot\implot.o
 
-	call em++ %OBJ% -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -O3 -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
+	call em++ %OBJ% -sMIN_WEBGL_VERSION=1 -sMAX_WEBGL_VERSION=2 -sTOTAL_STACK=4mb -sALLOW_MEMORY_GROWTH -O3 -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
 
 	copy /y .\template.html .\bin\Release-web\%PROJECT%\index.html >nul
 
