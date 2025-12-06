@@ -135,7 +135,7 @@ goto :fail
 	echo Linking project...
 	set OBJ=.\bin-int\Release-web\%PROJECT%\%PROJECT%.o .\Eis\bin-int\Release-web\Eis\eis.o .\Eis\vendor\GLAD\bin-int\Release-web\Glad\glad.o .\Eis\vendor\glm\bin-int\Release-web\glm\glm.o .\Eis\vendor\imgui\bin-int\Release-web\ImGui\imgui.o .\Eis\vendor\implot\bin-int\Release-web\ImPlot\implot.o
 
-	call em++ %OBJ% -sMIN_WEBGL_VERSION=1 -sMAX_WEBGL_VERSION=2 -sTOTAL_STACK=4mb -sALLOW_MEMORY_GROWTH -O3 -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --preload-file .\%PROJECT%\assetsWeb\@\assets
+	call em++ %OBJ% -sMIN_WEBGL_VERSION=1 -sMAX_WEBGL_VERSION=2 -sTOTAL_STACK=4mb -sALLOW_MEMORY_GROWTH -O3 -o .\bin\Release-web\%PROJECT%\index.html --use-port=contrib.glfw3 --embed-file .\%PROJECT%\assetsWeb\@\assets
 
 	copy /y .\template.html .\bin\Release-web\%PROJECT%\index.html >nul
 

@@ -1,13 +1,13 @@
 //type vertex
-#version 300 es
+#version 100
 precision mediump float;
 
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec4 a_Color;
+attribute vec3 a_Position;
+attribute vec4 a_Color;
 
 uniform mat4 u_VP;
 
-out vec4 v_Color;
+varying vec4 v_Color;
 
 void main()
 {
@@ -17,14 +17,12 @@ void main()
 
 
 //type fragment
-#version 300 es
+#version 100
 precision mediump float;
 
-layout(location = 0) out vec4 color;
-
-in vec4 v_Color;
+varying vec4 v_Color;
 
 void main()
 {
-	color = v_Color;
+	gl_FragColor = v_Color;
 }
