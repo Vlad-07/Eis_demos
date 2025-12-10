@@ -7,7 +7,7 @@ PhysicsDemo::PhysicsDemo(const std::string& name) : Demo(name)
 	m_CamController.SetMaxZoom(100);
 	m_CamController.SetZoom(15.0f);
 
-	Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(40.0f, 1.0f), 0, 0.3f, true);
+	Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(60.0f, 1.0f), 0, 0.3f, true);
 	m_Colors.emplace_back(glm::vec4(0.2f, 0.85f, 0.2f, 1.0f));
 	for (int i = 0; i < 40; i++)
 	{
@@ -80,7 +80,7 @@ void PhysicsDemo::ImGuiRender()
 	if (ImGui::Button("Clear"))
 	{
 		Eis::PhysicsManager2D::ClearBodies();
-		Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(40.0f, 1.0f), 0, 0.3f, true);
+		Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(60.0f, 1.0f), 0, 0.3f, true);
 		m_Colors.clear();
 		m_Colors.emplace_back(glm::vec4(0.2f, 0.85f, 0.2f, 1.0f));
 	}
@@ -94,7 +94,7 @@ void PhysicsDemo::ImGuiRender()
 void PhysicsDemo::OnEvent(Eis::Event& e)
 {
 	Eis::EventDispatcher d(e);
-	d.Dispatch<Eis::MouseButtonPressedEvent>([this](Eis::MouseButtonPressedEvent e) -> bool
+	d.Dispatch<Eis::MouseButtonPressedEvent>([&](Eis::MouseButtonPressedEvent e) -> bool
 	{
 		if (ImGui::GetIO().WantCaptureMouse)
 			return false;
