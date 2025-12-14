@@ -20,7 +20,7 @@
 // of Eis. From an application standpoint, it's terrible
 // Should be rewritten to demonstrate an actual architecture // no just check out Sot2D when it goes public
 
-// TODO: whacky display because strings are not null terminated?
+// BUG: whacky display because strings are not null terminated?
 
 class ChatDemo : public Demo
 {
@@ -31,10 +31,8 @@ public:
 	virtual void Attach() override;
 	virtual void Detach() override;
 
-	virtual void Update(Eis::TimeStep ts) override;
+	virtual void Render() override;
 	virtual void ImGuiRender() override;
-
-	virtual void OnEvent(Eis::Event& e) override {}
 
 private:
 	Eis::Scope<Eis::Server> m_Server; // Normally you should write sepparate
@@ -46,7 +44,7 @@ private:
 		bool isServer, isClient;
 		uint32_t port;
 		char ip[32];
-	} m_Conf;
+	} m_Conf{};
 	char m_MessageBuf[512]{};
 };
 

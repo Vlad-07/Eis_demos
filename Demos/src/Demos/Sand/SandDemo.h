@@ -15,7 +15,7 @@ public:
 
 	virtual void Attach() override;
 
-	virtual void Update(Eis::TimeStep ts) override;
+	virtual void Update() override;
 	virtual void ImGuiRender() override;
 
 	virtual void OnEvent(Eis::Event& e) override;

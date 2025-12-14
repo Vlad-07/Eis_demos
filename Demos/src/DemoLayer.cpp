@@ -28,12 +28,18 @@ void DemoLayer::Detach()
 }
 
 
-void DemoLayer::Update(Eis::TimeStep ts)
+void DemoLayer::Update()
 {
 	EIS_PROFILE_FUNCTION();
 
-	m_DemoManager.GetCurrentDemo().Update(ts);
-	m_LastTs = ts;
+	m_DemoManager.GetCurrentDemo().Update();
+}
+
+void DemoLayer::FixedUpdate()
+{
+	EIS_PROFILE_FUNCTION();
+
+	m_DemoManager.GetCurrentDemo().FixedUpdate();
 }
 
 void DemoLayer::Render()
@@ -67,7 +73,7 @@ void DemoLayer::ImGuiRender()
 	ImGui::Begin("Performance");
 	// TODO: maybe a proper performance system?
 	static uint32_t frames = 0; frames++;
-	static float elapsed = 0; elapsed += m_LastTs;
+	static float elapsed = 0; elapsed += Eis::Time::GetDeltaTime();
 	static float fps = 0.0f;
 	if (elapsed > 0.25f)
 		fps = frames / elapsed, frames = 0, elapsed = 0.0f;

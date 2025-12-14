@@ -3,7 +3,7 @@
 
 #ifdef EIS_NETWORKING_ENABLE
 
-ChatDemo::ChatDemo(const std::string& name) : Demo(name), m_Conf() {}
+ChatDemo::ChatDemo(const std::string& name) : Demo(name) {}
 
 
 void ChatDemo::Attach()
@@ -36,10 +36,8 @@ void ChatDemo::Detach()
 }
 
 
-void ChatDemo::Update(Eis::TimeStep ts)
+void ChatDemo::Render()
 {
-	EIS_PROFILE_SCOPE("Renderer Prep");
-	Eis::RenderCommands::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 	Eis::RenderCommands::Clear();
 }
 

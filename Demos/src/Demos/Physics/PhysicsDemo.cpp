@@ -33,10 +33,8 @@ void PhysicsDemo::Detach()
 }
 
 
-void PhysicsDemo::Update(Eis::TimeStep ts)
+void PhysicsDemo::FixedUpdate()
 {
-	m_CamController.Update(ts);
-
 	// Despawn fallen objects
 	for (uint32_t i = 0; i < Eis::PhysicsManager2D::GetBodyCount(); i++)
 	{
@@ -47,7 +45,12 @@ void PhysicsDemo::Update(Eis::TimeStep ts)
 		}
 	}
 
-	Eis::PhysicsManager2D::Update(15, ts);
+	Eis::PhysicsManager2D::Update(15);
+}
+
+void PhysicsDemo::Update()
+{
+	m_CamController.Update();
 }
 
 void PhysicsDemo::Render()
@@ -94,24 +97,33 @@ void PhysicsDemo::ImGuiRender()
 void PhysicsDemo::OnEvent(Eis::Event& e)
 {
 	Eis::EventDispatcher d(e);
-	d.Dispatch<Eis::MouseButtonPressedEvent>([&](Eis::MouseButtonPressedEvent e) -> bool
-	{
-		if (ImGui::GetIO().WantCaptureMouse)
+	d.Dispatch<Eis::KeyPressedEvent>([&](Eis::KeyPressedEvent& e) -> bool
+		{
+			if (e.GetKeyCode() == EIS_KEY_E)
+			{
+				Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), 0.0f, Eis::Random::Vec2(0.7f, 1.5f), 1.0f, 0.3f);
+				m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
+			}
 			return false;
-
-		if (e.GetMouseButton() == EIS_MOUSE_BUTTON_0)
+		});
+	d.Dispatch<Eis::MouseButtonPressedEvent>([&](Eis::MouseButtonPressedEvent& e) -> bool
 		{
-			Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), 0.0f, Eis::Random::Vec2(0.7f, 1.5f), 1.0f, 0.3f);
-			m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
-		}
-		else if (e.GetMouseButton() == EIS_MOUSE_BUTTON_1)
-		{
-			Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), Eis::Random::Float(0.3f, 0.7f), 1.0f, 0.3f);
-			m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
-		}
+			if (ImGui::GetIO().WantCaptureMouse)
+				return false;
 
-		return false;
-	});
+			if (e.GetMouseButton() == EIS_MOUSE_BUTTON_0)
+			{
+				Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), 0.0f, Eis::Random::Vec2(0.7f, 1.5f), 1.0f, 0.3f);
+				m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
+			}
+			else if (e.GetMouseButton() == EIS_MOUSE_BUTTON_1)
+			{
+				Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), Eis::Random::Float(0.3f, 0.7f), 1.0f, 0.3f);
+				m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
+			}
+
+			return false;
+		});
 
 	m_CamController.OnEvent(e);
 }

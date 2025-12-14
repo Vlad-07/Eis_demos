@@ -11,11 +11,13 @@ public:
 	virtual void Attach() {}
 	virtual void Detach() {}
 
-	virtual void Update(Eis::TimeStep) = 0;
+	virtual void Update() {}
+	virtual void FixedUpdate() {}
+
 	virtual void Render() {}
 	virtual void ImGuiRender() {}
 
-	virtual void OnEvent(Eis::Event& e) = 0;
+	virtual void OnEvent(Eis::Event& e) {}
 
 	const std::string& GetName() const { return m_Name; }
 

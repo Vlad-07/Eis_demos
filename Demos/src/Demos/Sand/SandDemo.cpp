@@ -15,11 +15,11 @@ void SandDemo::Attach()
 }
 
 
-void SandDemo::Update(Eis::TimeStep ts)
+void SandDemo::Update()
 {
 	EIS_PROFILE_FUNCTION();
 
-	m_CamController.Update(ts);
+	m_CamController.Update();
 
 	// User Input
 	glm::vec<2, uint32_t> mousePos = m_CamController.CalculateMouseWorldPos() * 10.0f + glm::vec2(0.5f);
