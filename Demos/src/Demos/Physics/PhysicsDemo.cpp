@@ -24,12 +24,12 @@ void PhysicsDemo::Attach()
 {
 	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
 	Eis::Renderer2D::SetLineWidth(1.0f);
-	Eis::Application::Get().GetWindow().SetVSync(false);
+	Eis::Application::GetWindow().SetVSync(false);
 }
 
 void PhysicsDemo::Detach()
 {
-	Eis::Application::Get().GetWindow().SetVSync(true);
+	Eis::Application::GetWindow().SetVSync(true);
 }
 
 

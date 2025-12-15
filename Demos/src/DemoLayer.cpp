@@ -3,7 +3,7 @@
 
 DemoLayer::DemoLayer() : Layer("Demo"), m_DemoManager()
 {
-	Eis::Application::Get().GetWindow().SetTitle("Eis Demos");
+	Eis::Application::GetWindow().SetTitle("Eis Demos");
 
 	m_DemoManager.LoadDemo<OverviewDemo>("Overview");
 	m_DemoManager.LoadDemo<PhysicsDemo>("Physics Demo");
@@ -73,7 +73,7 @@ void DemoLayer::ImGuiRender()
 	ImGui::Begin("Performance");
 	// TODO: maybe a proper performance system?
 	static uint32_t frames = 0; frames++;
-	static float elapsed = 0; elapsed += Eis::Time::GetDeltaTime();
+	static float elapsed = 0; elapsed += (float)Eis::Time::GetDeltaTime();
 	static float fps = 0.0f;
 	if (elapsed > 0.25f)
 		fps = frames / elapsed, frames = 0, elapsed = 0.0f;

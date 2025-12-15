@@ -43,7 +43,7 @@ void OverviewDemo::Render()
 		Eis::Renderer2D::DrawQuad(glm::vec2(-1.0f), glm::vec2(1.0f), glm::vec4(1, 0, 0, 1));
 		Eis::Renderer2D::DrawQuad(glm::vec2(-1.0f, 0.0f), glm::vec2(1.0f), ice);
 
-		static float rot = 0.0f; rot += 28.8f * Eis::Time::GetDeltaTime();
+		static float rot = 0.0f; rot += 28.8f * (float)Eis::Time::GetDeltaTime();
 		if (rot >= 360.f) rot -= 360.0f;
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 1.0f), glm::vec2(1.0f, 0.3f), rot, glm::vec4(0.8f, 0.5f, 0.2f, 1.0f));
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 0.0f), glm::vec2(1.0f), rot, mouce);
@@ -51,9 +51,9 @@ void OverviewDemo::Render()
 		static float x = 0.0f, fact = 1.0f;
 		if (x > 2.0f)		fact *= -1, x = 2.0f;
 		else if (x < -2.0f) fact *= -1, x = -2.0f;
-		Eis::Renderer2D::DrawCircle(glm::vec2(x += Eis::Time::GetDeltaTime() * fact, 1.0f), glm::vec2(1.0f), glm::vec4(1, 1, 0, 1), m_CircleThickness, m_CircleFade);
+		Eis::Renderer2D::DrawCircle(glm::vec2(x += (float)Eis::Time::GetDeltaTime() * fact, 1.0f), glm::vec2(1.0f), glm::vec4(1, 1, 0, 1), m_CircleThickness, m_CircleFade);
 
-		m_LineAngle += 100.0f * Eis::Time::GetDeltaTime(); if (m_LineAngle > 360.0f) m_LineAngle -= 360.0f;
+		m_LineAngle += 100.0f * (float)Eis::Time::GetDeltaTime(); if (m_LineAngle > 360.0f) m_LineAngle -= 360.0f;
 		Eis::Renderer2D::DrawLine(glm::vec2(1.0f, 0.0f), m_LineAngle, 0.5f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
 		Eis::Renderer2D::EndScene();
