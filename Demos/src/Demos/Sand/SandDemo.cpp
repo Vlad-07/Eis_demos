@@ -2,7 +2,7 @@
 
 
 SandDemo::SandDemo(const std::string& name)
-	: Demo(name), m_CamController(), m_World(c_WorldSize), m_BrushElement(ElementParams::ID::SAND)
+	: Demo(name), m_World(c_WorldSize)
 {}
 
 void SandDemo::Attach()
@@ -10,7 +10,6 @@ void SandDemo::Attach()
 	Eis::Renderer2D::SetClearColor(glm::vec3(0.0f));
 	m_CamController.SetMaxZoom(100.0f);
 	m_CamController.SetZoom(10.5f);
-	m_CamController.SetZoomLock(true);
 	m_CamController.SetPosition(glm::vec3(glm::vec2(c_WorldSize) * (c_CellSize.x / 2.0f), 0.0f));
 }
 
@@ -22,7 +21,7 @@ void SandDemo::Update()
 	m_CamController.Update();
 
 	// User Input
-	glm::vec<2, uint32_t> mousePos = m_CamController.CalculateMouseWorldPos() * 10.0f + glm::vec2(0.5f);
+	glm::ivec2 mousePos = m_CamController.CalculateMouseWorldPos() * 10.0f + glm::vec2(0.5f);
 	bool mouseInBounds = mousePos.x < c_WorldSize.x && mousePos.y < c_WorldSize.y;
 
 	// Brush
@@ -55,26 +54,25 @@ void SandDemo::Update()
 	Eis::Renderer2D::ResetStats();
 	Eis::Renderer2D::BeginScene(m_CamController.GetCamera());
 
+	// Background
+	Eis::Renderer2D::DrawQuad(glm::vec2(c_WorldSize) * (c_CellSize.x / 2.0f) - glm::vec2(c_CellSize / 2.0f), m_World.GetSize() * c_CellSize, g_Elements[ElementParams::AIR].Color);
+
 	// Cells
-	for (uint32_t y = 0; y < c_WorldSize.y; y++)
-	for (uint32_t x = 0; x < c_WorldSize.x; x++)
-		Eis::Renderer2D::DrawQuad(glm::vec2(x, y) * c_CellSize, c_CellSize, glm::vec4(g_Elements[m_World.At(x, y)].Color, 1.0f));
+	for (int32_t y = 0; y < c_WorldSize.y; y++)
+	for (int32_t x = 0; x < c_WorldSize.x; x++)
+		if (m_World.At(x, y) != ElementParams::AIR)
+		Eis::Renderer2D::DrawQuad(glm::vec2(x, y) * c_CellSize, c_CellSize, g_Elements[m_World.At(x, y)].Color);
 
 	// Cell highlight
 	if (mouseInBounds)
 		Eis::Renderer2D::DrawQuad(glm::vec2(mousePos) * c_CellSize, c_CellSize, glm::vec4(0.7f));
 
 	Eis::Renderer2D::EndScene();
+}
 
-
-	// Computing
-	static auto lastUpdateTime = std::chrono::high_resolution_clock::now();
-	if (std::chrono::high_resolution_clock::now() >= lastUpdateTime + std::chrono::milliseconds(16))
-	{
-		m_World.Update();
-		m_LastComputeTime = std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - lastUpdateTime).count();
-		lastUpdateTime = std::chrono::high_resolution_clock::now();
-	}
+void SandDemo::FixedUpdate()
+{
+	m_World.Update();
 }
 
 void SandDemo::ImGuiRender()
@@ -97,10 +95,6 @@ void SandDemo::ImGuiRender()
 
 		if (ImGui::Button("Clear"))
 			m_World.Clear();
-
-		ImGui::Separator();
-
-		ImGui::Text("%.3f TPS", 1.0f / m_LastComputeTime);
 	} ImGui::End();
 }
 

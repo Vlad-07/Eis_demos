@@ -71,12 +71,12 @@ void DemoLayer::ImGuiRender()
 	} ImGui::End();
 
 	ImGui::Begin("Performance");
-	// TODO: maybe a proper performance system?
+	// TODO: a proper performance system
 	static uint32_t frames = 0; frames++;
-	static float elapsed = 0; elapsed += (float)Eis::Time::GetDeltaTime();
+	static Eis::Duration elapsed; elapsed += (float)Eis::Time::GetUncappedDeltaTime();
 	static float fps = 0.0f;
-	if (elapsed > 0.25f)
-		fps = frames / elapsed, frames = 0, elapsed = 0.0f;
+	if (elapsed.GetSeconds() > 0.25f)
+		fps = frames / (float)elapsed.GetSeconds(), frames = 0, elapsed = Eis::Duration::FromSec(0.0f);
 
 	ImGui::Text("%.1f FPS (%.3f ms)", fps, 1000.0f / fps);
 	ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
@@ -92,14 +92,6 @@ void DemoLayer::OnEvent(Eis::Event& e)
 {
 	EIS_PROFILE_FUNCTION();
 
-	// MVPs must be updated for all demo's cameras
-	// other events *might* need to be propagated to all demos
-	if (e.IsType(Eis::EventType::WindowResize))
-	{
-		for (Eis::Scope<Demo>& demo : m_DemoManager.GetDemos())
-			demo->OnEvent(e);
-		return;
-	}
-
-	m_DemoManager.GetCurrentDemo().OnEvent(e);
+	for (Eis::Scope<Demo>& demo : m_DemoManager.GetDemos())
+		demo->OnEvent(e);
 }

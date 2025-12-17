@@ -25,7 +25,7 @@ public:
 	virtual void OnEvent(Eis::Event& e) override;
 
 private:
-	Eis::OrthoCameraController m_CameraController;
+	Eis::OrthoCameraController m_CameraController{};
 	Eis::Ref<Eis::Texture2D> ice, mouce;
 	float m_LineAngle, m_CircleThickness, m_CircleFade;
 };

@@ -22,6 +22,8 @@ public:
 	ElementParams At(uint32_t x, uint32_t y) const { return m_Mat[y][x]; }
 	ElementParams At(glm::ivec2 pos) const { return m_Mat[pos.y][pos.x]; }
 
+	glm::vec2 GetSize() const { return glm::vec2(m_Mat[0].size(), m_Mat.size()); }
+
 private:
 	std::vector<std::vector<ElementParams>> m_Mat;
 };
