@@ -1,7 +1,9 @@
 #include "PhysicsDemo.h"
 
+#include "Demos/Menu.h"
 
-PhysicsDemo::PhysicsDemo(const std::string& name) : Demo(name)
+
+PhysicsDemo::PhysicsDemo(const std::string& name) : Layer(name)
 {
 	m_CamController.SetPoseLock(true);
 	m_CamController.SetMaxZoom(100);
@@ -29,6 +31,7 @@ void PhysicsDemo::Attach()
 
 void PhysicsDemo::Detach()
 {
+	Eis::PhysicsManager2D::ClearBodies();
 	Eis::Application::GetWindow().SetVSync(true);
 }
 
@@ -92,6 +95,8 @@ void PhysicsDemo::ImGuiRender()
 	ImGui::Checkbox("Draw circle lines", &m_DrawCircleLine);
 
 	ImGui::End();
+
+	ImGuiMenu();
 }
 
 void PhysicsDemo::OnEvent(Eis::Event& e)
@@ -126,4 +131,10 @@ void PhysicsDemo::OnEvent(Eis::Event& e)
 		});
 
 	m_CamController.OnEvent(e);
+}
+
+
+Eis::Layer::Factory PhysicsDemo::GetFactory()
+{
+	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<PhysicsDemo>(name); };
 }

@@ -1,8 +1,10 @@
 #include "SandDemo.h"
 
+#include "Demos/Menu.h"
+
 
 SandDemo::SandDemo(const std::string& name)
-	: Demo(name), m_World(c_WorldSize)
+	: Layer(name), m_World(c_WorldSize)
 {}
 
 void SandDemo::Attach()
@@ -10,7 +12,7 @@ void SandDemo::Attach()
 	Eis::Renderer2D::SetClearColor(glm::vec3(0.0f));
 	m_CamController.SetMaxZoom(100.0f);
 	m_CamController.SetZoom(10.5f);
-	m_CamController.SetPosition(glm::vec3(glm::vec2(c_WorldSize) * (c_CellSize.x / 2.0f), 0.0f));
+	m_CamController.SetPosition(glm::vec2(c_WorldSize) * (c_CellSize.x / 2.0f) + glm::vec2(-2.5f, 0.0f));
 }
 
 
@@ -21,7 +23,7 @@ void SandDemo::Update()
 	m_CamController.Update();
 
 	// User Input
-	glm::ivec2 mousePos = m_CamController.CalculateMouseWorldPos() * 10.0f + glm::vec2(0.5f);
+	glm::uvec2 mousePos = m_CamController.CalculateMouseWorldPos() * 10.0f + glm::vec2(0.5f);
 	bool mouseInBounds = mousePos.x < c_WorldSize.x && mousePos.y < c_WorldSize.y;
 
 	// Brush
@@ -58,10 +60,10 @@ void SandDemo::Update()
 	Eis::Renderer2D::DrawQuad(glm::vec2(c_WorldSize) * (c_CellSize.x / 2.0f) - glm::vec2(c_CellSize / 2.0f), m_World.GetSize() * c_CellSize, g_Elements[ElementParams::AIR].Color);
 
 	// Cells
-	for (int32_t y = 0; y < c_WorldSize.y; y++)
-	for (int32_t x = 0; x < c_WorldSize.x; x++)
+	for (uint32_t y = 0; y < c_WorldSize.y; y++)
+	for (uint32_t x = 0; x < c_WorldSize.x; x++)
 		if (m_World.At(x, y) != ElementParams::AIR)
-		Eis::Renderer2D::DrawQuad(glm::vec2(x, y) * c_CellSize, c_CellSize, g_Elements[m_World.At(x, y)].Color);
+			Eis::Renderer2D::DrawQuad(glm::vec2(x, y) * c_CellSize, c_CellSize, g_Elements[m_World.At(x, y)].Color);
 
 	// Cell highlight
 	if (mouseInBounds)
@@ -96,9 +98,17 @@ void SandDemo::ImGuiRender()
 		if (ImGui::Button("Clear"))
 			m_World.Clear();
 	} ImGui::End();
+
+	ImGuiMenu();
 }
 
 void SandDemo::OnEvent(Eis::Event& e)
 {
 	m_CamController.OnEvent(e);
+}
+
+
+Eis::Layer::Factory SandDemo::GetFactory()
+{
+	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<SandDemo>(name); };
 }

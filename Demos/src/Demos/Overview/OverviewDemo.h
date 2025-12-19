@@ -2,14 +2,11 @@
 
 #include <Eis.h>
 #include <imgui.h>
-#include <implot.h>
-
-#include "Demos/Demo.h"
 
 
 // Demos landing. Whacky conglomerate of everything
 
-class OverviewDemo : public Demo
+class OverviewDemo : public Eis::Layer
 {
 public:
 	OverviewDemo(const std::string& name);
@@ -24,8 +21,10 @@ public:
 
 	virtual void OnEvent(Eis::Event& e) override;
 
+	static Factory GetFactory();
+
 private:
 	Eis::OrthoCameraController m_CameraController{};
 	Eis::Ref<Eis::Texture2D> ice, mouce;
-	float m_LineAngle, m_CircleThickness, m_CircleFade;
+	float m_LineAngle{}, m_CircleThickness{0.9f}, m_CircleFade{0.1f};
 };

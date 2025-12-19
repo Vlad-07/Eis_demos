@@ -3,11 +3,10 @@
 #include <Eis.h>
 #include <imgui.h>
 
-#include "Demos/Demo.h"
 #include "World.h"
 
 
-class SandDemo : public Demo
+class SandDemo : public Eis::Layer
 {
 public:
 	SandDemo(const std::string& name);
@@ -21,6 +20,8 @@ public:
 
 	virtual void OnEvent(Eis::Event& e) override;
 
+	static Factory GetFactory();
+
 private:
 	Eis::OrthoCameraController m_CamController{};
 	World m_World;
@@ -29,10 +30,10 @@ private:
 
 	bool m_BrushPressed = false;
 	bool m_EraserPressed = false;
-	glm::ivec2 m_LastBrushPos{};
-	glm::ivec2 m_LastEraserPos{};
+	glm::uvec2 m_LastBrushPos{};
+	glm::uvec2 m_LastEraserPos{};
 
 private:
-	static constexpr glm::ivec2 c_WorldSize = glm::vec2(302, 188);
+	static constexpr glm::uvec2 c_WorldSize = glm::vec2(302, 188);
 	static constexpr glm::vec2 c_CellSize = glm::vec2(0.1f);
 };

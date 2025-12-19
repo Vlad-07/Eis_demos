@@ -1,9 +1,11 @@
 #include "ChatDemo.h"
 
+#include "Demos/Menu.h"
+
 
 #ifdef EIS_NETWORKING_ENABLE
 
-ChatDemo::ChatDemo(const std::string& name) : Demo(name) {}
+ChatDemo::ChatDemo(const std::string& name) : Layer(name) {}
 
 
 void ChatDemo::Attach()
@@ -43,6 +45,8 @@ void ChatDemo::Render()
 
 void ChatDemo::ImGuiRender()
 {
+	ImGuiMenu();
+
 	// Init
 	if (!m_Server && !m_Client)
 	{
@@ -230,6 +234,12 @@ void ChatDemo::ImGuiRender()
 
 		ImGui::End();
 	}
+}
+
+
+Eis::Layer::Factory ChatDemo::GetFactory()
+{
+	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<ChatDemo>(name); };
 }
 
 #endif

@@ -1,17 +1,15 @@
 #include "OverviewDemo.h"
 
+#include "Demos/Menu.h"
 
-OverviewDemo::OverviewDemo(const std::string& name)
-	: Demo(name), m_LineAngle(0.0f), m_CircleThickness(0.9f), m_CircleFade(0.1f)
-{}
+
+OverviewDemo::OverviewDemo(const std::string& name): Layer(name) {}
 
 
 void OverviewDemo::Attach()
 {
-	EIS_TRACE("Loading assets...");
 	ice = Eis::Texture2D::Create("assets/textures/ice.png");
 	mouce = Eis::Texture2D::Create("assets/textures/mouce.png");
-	EIS_TRACE("Done loading assets.");
 
 	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
 }
@@ -72,9 +70,17 @@ void OverviewDemo::ImGuiRender()
 	ImGui::SliderFloat("Circle Fade", &m_CircleFade, 0.0f, 1.0f);
 
 	ImGui::End();
+
+	ImGuiMenu();
 }
 
 void OverviewDemo::OnEvent(Eis::Event& e)
 {
 	m_CameraController.OnEvent(e);
+}
+
+
+Eis::Layer::Factory OverviewDemo::GetFactory()
+{
+	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<OverviewDemo>(name); };
 }

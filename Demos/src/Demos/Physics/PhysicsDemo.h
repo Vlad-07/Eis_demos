@@ -4,12 +4,11 @@
 #include <Eis/Physics/Physics.h>
 #include <imgui.h>
 
-#include "Demos/Demo.h"
 
 // Showcase of the physics 'engine'
 // Should have used Box2D
 
-class PhysicsDemo : public Demo
+class PhysicsDemo : public Eis::Layer
 {
 public:
 	PhysicsDemo(const std::string& name);
@@ -25,6 +24,8 @@ public:
 	virtual void ImGuiRender() override;
 
 	virtual void OnEvent(Eis::Event& e) override;
+
+	static Factory GetFactory();
 
 private:
 	Eis::OrthoCameraController m_CamController;

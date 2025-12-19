@@ -7,8 +7,6 @@
 #include <Eis.h>
 #include <imgui.h>
 
-#include "Demos/Demo.h"
-
 #include <Eis/Networking/Server.h>
 #include <Eis/Networking/Client.h>
 
@@ -22,7 +20,7 @@
 
 // BUG: whacky display because strings are not null terminated?
 
-class ChatDemo : public Demo
+class ChatDemo : public Eis::Layer
 {
 public:
 	ChatDemo(const std::string& name);
@@ -33,6 +31,8 @@ public:
 
 	virtual void Render() override;
 	virtual void ImGuiRender() override;
+
+	static Factory GetFactory();
 
 private:
 	Eis::Scope<Eis::Server> m_Server; // Normally you should write sepparate
