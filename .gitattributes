@@ -1,3 +1,4 @@
-Demos/** linguist-detectable
+Demos/** linguist-documentation=false
+Demos/** linguist-vendored=false
 Demos/src/** linguist-detectable
 pages/* linguist-generated
