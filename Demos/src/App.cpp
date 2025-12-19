@@ -1,7 +1,5 @@
-#include <Eis.h>
+#include <Eis/Core/Application.h>
 #include <Eis/Core/EntryPoint.h>
-
-#include <imgui.h>
 
 #include "DemoLayer.h"
 
@@ -11,7 +9,7 @@ class App : public Eis::Application
 public:
 	App()
 	{
-		PushLayer(new DemoLayer());
+		PushLayer(Eis::CreateScope<DemoLayer>());
 	}
 
 	virtual ~App() = default;

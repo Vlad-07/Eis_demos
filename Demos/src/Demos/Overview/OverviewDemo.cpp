@@ -1,5 +1,6 @@
 #include "OverviewDemo.h"
 
+
 OverviewDemo::OverviewDemo(const std::string& name)
 	: Demo(name), m_LineAngle(0.0f), m_CircleThickness(0.9f), m_CircleFade(0.1f)
 {}
