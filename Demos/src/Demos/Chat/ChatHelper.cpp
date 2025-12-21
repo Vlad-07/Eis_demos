@@ -2,7 +2,7 @@
 
 #ifdef EIS_NETWORKING_ENABLE
 
-#include <Eis/Core/Log.h>
+#include <Eis/Debug/Assert.h>
 
 
 ChatHelper* ChatHelper::s_Instance = nullptr;
