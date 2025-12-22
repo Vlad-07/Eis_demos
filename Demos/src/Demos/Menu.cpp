@@ -5,21 +5,21 @@
 #include <imgui.h>
 
 
-void ImGuiMenu()
+void ImGuiMenu(Eis::EisContext& c)
 {
 	ImGui::Begin("Demo Menu");
 
 	if (ImGui::Button("Overview"))
-		Eis::Application::QueueTransition("Overview");
+		c.App().QueueTransition("Overview");
 	if (ImGui::Button("Physics"))
-		Eis::Application::QueueTransition("Physics");
+		c.App().QueueTransition("Physics");
 	if (ImGui::Button("Sand"))
-		Eis::Application::QueueTransition("Sand");
+		c.App().QueueTransition("Sand");
 #ifdef EIS_NETWORKING_ENABLE
 	if (ImGui::Button("Chat"))
-		Eis::Application::QueueTransition("Chat");
+		c.App().QueueTransition("Chat");
 	if (ImGui::Button("Quit"))
-		Eis::Application::ShouldClose();
+		c.App().ShouldClose();
 #endif
 
 	ImGui::End();

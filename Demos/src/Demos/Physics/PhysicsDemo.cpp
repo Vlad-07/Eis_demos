@@ -26,13 +26,13 @@ void PhysicsDemo::Attach()
 {
 	Eis::Renderer2D::SetClearColor(glm::vec3(0.1f));
 	Eis::Renderer2D::SetLineWidth(1.0f);
-	Eis::Application::GetWindow().SetVSync(false);
+	Eis.Window().SetVSync(false);
 }
 
 void PhysicsDemo::Detach()
 {
 	Eis::PhysicsManager2D::ClearBodies();
-	Eis::Application::GetWindow().SetVSync(true);
+	Eis.Window().SetVSync(true);
 }
 
 
@@ -96,7 +96,7 @@ void PhysicsDemo::ImGuiRender()
 
 	ImGui::End();
 
-	ImGuiMenu();
+	ImGuiMenu(Eis);
 }
 
 void PhysicsDemo::OnEvent(Eis::Event& e)

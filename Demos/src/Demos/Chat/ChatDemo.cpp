@@ -45,7 +45,7 @@ void ChatDemo::Render()
 
 void ChatDemo::ImGuiRender()
 {
-	ImGuiMenu();
+	ImGuiMenu(Eis);
 
 	// Init
 	if (!m_Server && !m_Client)

@@ -99,7 +99,7 @@ void SandDemo::ImGuiRender()
 			m_World.Clear();
 	} ImGui::End();
 
-	ImGuiMenu();
+	ImGuiMenu(Eis);
 }
 
 void SandDemo::OnEvent(Eis::Event& e)

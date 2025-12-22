@@ -71,7 +71,7 @@ void OverviewDemo::ImGuiRender()
 
 	ImGui::End();
 
-	ImGuiMenu();
+	ImGuiMenu(Eis);
 }
 
 void OverviewDemo::OnEvent(Eis::Event& e)
