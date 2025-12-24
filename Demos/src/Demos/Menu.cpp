@@ -1,8 +1,8 @@
 #include "Menu.h"
 
+#include <imgui.h>
 #include <Eis/Core/Application.h>
 #include <Eis/Rendering/Renderer/Renderer2D.h>
-#include <imgui.h>
 
 
 void ImGuiMenu(Eis::EisContext& c)
