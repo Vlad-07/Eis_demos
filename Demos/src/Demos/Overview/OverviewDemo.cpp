@@ -44,6 +44,9 @@ void OverviewDemo::Render()
 
 		static float rot = 0.0f; rot += 28.8f * (float)Eis::Time::GetDeltaTime();
 		if (rot >= 360.f) rot -= 360.0f;
+
+		Eis::Renderer2D::DrawRotatedTriangle(glm::mat3({ 0.3, 0.0, 0.0f }, { -0.3, -1.1, 0.0f }, { 1.5, -1.0, 0.0f }), -rot * 20, { 0.1f, 0.1f, 0.9f, 1.0f });
+
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 1.0f), glm::vec2(1.0f, 0.3f), rot, glm::vec4(0.8f, 0.5f, 0.2f, 1.0f));
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 0.0f), glm::vec2(1.0f), rot, mouce);
 
@@ -68,6 +71,8 @@ void OverviewDemo::ImGuiRender()
 	ImGui::SliderFloat("Circle Thickness", &m_CircleThickness, 0.0f, 1.0f);
 	ImGui::SetNextItemWidth(50.0f);
 	ImGui::SliderFloat("Circle Fade", &m_CircleFade, 0.0f, 1.0f);
+	ImGui::Text("Mouse coords: %.1f, %.1f", m_CameraController.CalculateMouseWorldPos().x,
+											m_CameraController.CalculateMouseWorldPos().y);
 
 	ImGui::End();
 

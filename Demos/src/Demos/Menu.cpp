@@ -35,6 +35,7 @@ void ImGuiMenu(Eis::EisContext& c)
 
 	ImGui::Text("%.1f FPS (%.3f ms)", fps, 1000.0f / fps);
 	ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
+	ImGui::Text("Tri count:    %i", Eis::Renderer2D::GetStats().TriangleCount);
 	ImGui::Text("Quad count:   %i", Eis::Renderer2D::GetStats().QuadCount);
 	ImGui::Text("Circle count: %i", Eis::Renderer2D::GetStats().CircleCount);
 	ImGui::Text("Line count:   %i", Eis::Renderer2D::GetStats().LineCount);
