@@ -48,7 +48,7 @@ void PhysicsDemo::FixedUpdate()
 		}
 	}
 
-	Eis::PhysicsManager2D::Update(15);
+	Eis::PhysicsManager2D::Update(10);
 }
 
 void PhysicsDemo::Update()
@@ -62,16 +62,53 @@ void PhysicsDemo::Render()
 	Eis::Renderer2D::ResetStats();
 	Eis::Renderer2D::BeginScene(m_CamController.GetCamera());
 
+	// not ideal rendering
 	for (uint32_t i = 0; i < Eis::PhysicsManager2D::GetBodyCount(); i++)
-		Eis::PhysicsManager2D::GetBody(i).Draw(m_Colors[i], m_DrawCircleLine);
+	{
+		const Eis::Rigidbody2D& rb = Eis::PhysicsManager2D::GetBody(i);
+		switch (rb.GetCollider().GetType())
+		{
+		case Eis::Collider2D::Type::CIRCLE:
+		{
+			const auto& c = rb.GetCollider().As<Eis::CircleCollider2D>();
+			Eis::Renderer2D::DrawCircle(rb.GetPosition(), c.GetRadius() * 2.0f, m_Colors[i]);
+			if (m_DrawCircleLine)
+				Eis::Renderer2D::DrawLine(rb.GetPosition(), glm::degrees(rb.GetRotation()), c.GetRadius(), glm::vec4(0, 0, 0, 1)); // Rotation visualiser
+			break;
+		}
+
+		case Eis::Collider2D::Type::POLYGON:
+			Eis::Renderer2D::DrawQuad(*(glm::mat4x2*)rb.GetCollider().As<Eis::PolygonCollider2D>().GetTransformedVertices(rb.GetPosition(), rb.GetRotation()).data(), m_Colors[i]);
+			break;
+
+		default:
+			EIS_CORE_ERROR("Invalid Rigidbody2D type!");
+		}
+
+	}
 
 	if (m_DrawBB)
-		for (const auto& b : Eis::PhysicsManager2D::GetBodies())
-			b.DrawBoundingBox();
+		for (const auto& rb : Eis::PhysicsManager2D::GetBodies())
+		{
+			const Eis::BBox2D& bb = rb.GetBBox();
+			Eis::Renderer2D::DrawLine(bb.BottomLeft, { bb.TopRight.x, bb.BottomLeft.y }, glm::vec4(0, 1, 0, 1));
+			Eis::Renderer2D::DrawLine({ bb.TopRight.x, bb.BottomLeft.y }, bb.TopRight, glm::vec4(0, 1, 0, 1));
+			Eis::Renderer2D::DrawLine(bb.TopRight, { bb.BottomLeft.x, bb.TopRight.y }, glm::vec4(0, 1, 0, 1));
+			Eis::Renderer2D::DrawLine({ bb.BottomLeft.x, bb.TopRight.y }, bb.BottomLeft, glm::vec4(0, 1, 0, 1));
+		}
 
 	if (m_DrawVertices)
-		for (const auto& b : Eis::PhysicsManager2D::GetBodies())
-			b.DrawVertices();
+		for (const auto& rb : Eis::PhysicsManager2D::GetBodies())
+		{
+			if (rb.GetCollider().GetType() != Eis::Collider2D::Type::POLYGON)
+				continue;
+
+			const auto& tv = rb.GetCollider().As<Eis::PolygonCollider2D>().GetTransformedVertices(rb.GetPosition(), rb.GetRotation());
+			Eis::Renderer2D::DrawCircle(tv[0], glm::vec2(0.1f), glm::vec4(1.0f));
+			Eis::Renderer2D::DrawCircle(tv[1], glm::vec2(0.1f), glm::vec4(1.0f));
+			Eis::Renderer2D::DrawCircle(tv[2], glm::vec2(0.1f), glm::vec4(1.0f));
+			Eis::Renderer2D::DrawCircle(tv[3], glm::vec2(0.1f), glm::vec4(1.0f));
+		}
 
 	Eis::Renderer2D::EndScene();
 }
