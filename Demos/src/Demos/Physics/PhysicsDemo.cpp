@@ -3,21 +3,20 @@
 #include "Demos/Menu.h"
 
 
-PhysicsDemo::PhysicsDemo(const std::string& name) : Layer(name)
+PhysicsDemo::PhysicsDemo() : Layer{ "Physics" }
 {
 	m_CamController.SetPoseLock(true);
 	m_CamController.SetMaxZoom(100);
 	m_CamController.SetZoom(15.0f);
 
-	Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(60.0f, 1.0f), 0, 0.3f, true);
-	m_Colors.emplace_back(glm::vec4(0.2f, 0.85f, 0.2f, 1.0f));
+	m_Entities.reserve(41);
+	m_Entities.emplace_back(glm::vec2{ 0, -5.0f }, glm::vec2{ 60.0f, 1.0f }, glm::vec3{ 0.2f, 0.85f, 0.2f }, true);
 	for (int i = 0; i < 40; i++)
 	{
 		if (i % 2)
-			Eis::PhysicsManager2D::AddBody({ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 5.0f) }, Eis::Random::Float(0.3f, 0.7f), 1.0f, 0.5f);
+			m_Entities.emplace_back(glm::vec2{ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 5.0f) }, Eis::Random::Float(0.3f, 0.7f), Eis::Random::Vec3());
 		else
-			Eis::PhysicsManager2D::AddBody({ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(7.0f, 15.0f) }, 0, Eis::Random::Vec2(0.7f, 1.3f), 1.0f, 0.5f);
-		m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
+			m_Entities.emplace_back(glm::vec2{ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 7.0f) }, Eis::Random::Vec2(0.7f, 1.3f), Eis::Random::Vec3());
 	}
 }
 
@@ -31,7 +30,6 @@ void PhysicsDemo::Attach()
 
 void PhysicsDemo::Detach()
 {
-	Eis::PhysicsManager2D::ClearBodies();
 	Eis.Window().SetVSync(true);
 }
 
@@ -39,16 +37,16 @@ void PhysicsDemo::Detach()
 void PhysicsDemo::FixedUpdate()
 {
 	// Despawn fallen objects
-	for (uint32_t i = 0; i < Eis::PhysicsManager2D::GetBodyCount(); i++)
+	for (size_t i{}; i < m_Entities.size(); i++)
 	{
-		if (Eis::PhysicsManager2D::GetBody(i).GetPosition().y < -50.0f)
+		if (m_Entities[i].GetPosition().y < -50.0f)
 		{
-			Eis::PhysicsManager2D::RemoveBody(i);
-			m_Colors.erase(m_Colors.begin() + i);
+			m_Entities.erase(m_Entities.begin() + i);
+			i--;
 		}
 	}
 
-	Eis::PhysicsManager2D::Update(10);
+	Eis::PhysicsManager2D::Update(20);
 }
 
 void PhysicsDemo::Update()
@@ -63,22 +61,23 @@ void PhysicsDemo::Render()
 	Eis::Renderer2D::BeginScene(m_CamController.GetCamera());
 
 	// not ideal rendering
-	for (uint32_t i = 0; i < Eis::PhysicsManager2D::GetBodyCount(); i++)
+	for (size_t i{}; i < m_Entities.size(); i++)
 	{
-		const Eis::Rigidbody2D& rb = Eis::PhysicsManager2D::GetBody(i);
+		const Eis::Rigidbody2D& rb = m_Entities[i].GetRB();
 		switch (rb.GetCollider().GetType())
 		{
 		case Eis::Collider2D::Type::CIRCLE:
 		{
 			const auto& c = rb.GetCollider().As<Eis::CircleCollider2D>();
-			Eis::Renderer2D::DrawCircle(rb.GetPosition(), c.GetRadius() * 2.0f, m_Colors[i]);
+			Eis::Renderer2D::DrawCircle(rb.GetPosition(), c.GetRadius() * 2.0f, glm::vec4{ m_Entities[i].GetColor(), 1.0f });
 			if (m_DrawCircleLine)
-				Eis::Renderer2D::DrawLine(rb.GetPosition(), glm::degrees(rb.GetRotation()), c.GetRadius(), glm::vec4(0, 0, 0, 1)); // Rotation visualiser
+				Eis::Renderer2D::DrawLine(rb.GetPosition(), rb.GetRotation(), c.GetRadius(), glm::vec4{ 0, 0, 0, 1 }); // Rotation visualiser
 			break;
 		}
 
 		case Eis::Collider2D::Type::POLYGON:
-			Eis::Renderer2D::DrawQuad(*(glm::mat4x2*)rb.GetCollider().As<Eis::PolygonCollider2D>().GetTransformedVertices(rb.GetPosition(), rb.GetRotation()).data(), m_Colors[i]);
+			Eis::Renderer2D::DrawQuad(*(glm::mat4x2*)rb.GetCollider().As<Eis::PolygonCollider2D>()
+				.GetTransformedVertices(rb.GetPosition(), rb.GetRotation()).data(), glm::vec4{ m_Entities[i].GetColor(), 1.0f });
 			break;
 
 		default:
@@ -88,9 +87,9 @@ void PhysicsDemo::Render()
 	}
 
 	if (m_DrawBB)
-		for (const auto& rb : Eis::PhysicsManager2D::GetBodies())
+		for (const auto& e : m_Entities)
 		{
-			const Eis::BBox2D& bb = rb.GetBBox();
+			const Eis::BBox2D& bb = e.GetRB().GetBBox();
 			Eis::Renderer2D::DrawLine(bb.BottomLeft, { bb.TopRight.x, bb.BottomLeft.y }, glm::vec4(0, 1, 0, 1));
 			Eis::Renderer2D::DrawLine({ bb.TopRight.x, bb.BottomLeft.y }, bb.TopRight, glm::vec4(0, 1, 0, 1));
 			Eis::Renderer2D::DrawLine(bb.TopRight, { bb.BottomLeft.x, bb.TopRight.y }, glm::vec4(0, 1, 0, 1));
@@ -98,8 +97,9 @@ void PhysicsDemo::Render()
 		}
 
 	if (m_DrawVertices)
-		for (const auto& rb : Eis::PhysicsManager2D::GetBodies())
+		for (const auto& e : m_Entities)
 		{
+			const Eis::Rigidbody2D& rb = e.GetRB();
 			if (rb.GetCollider().GetType() != Eis::Collider2D::Type::POLYGON)
 				continue;
 
@@ -122,10 +122,8 @@ void PhysicsDemo::ImGuiRender()
 	ImGui::Text("Object count: %i", Eis::PhysicsManager2D::GetBodyCount());
 	if (ImGui::Button("Clear"))
 	{
-		Eis::PhysicsManager2D::ClearBodies();
-		Eis::PhysicsManager2D::AddBody(glm::vec2(0, -5.0f), 0.0f, glm::vec2(60.0f, 1.0f), 0, 0.3f, true);
-		m_Colors.clear();
-		m_Colors.emplace_back(glm::vec4(0.2f, 0.85f, 0.2f, 1.0f));
+		m_Entities.clear();
+		m_Entities.emplace_back(glm::vec2(0, -5.0f), glm::vec2(60.0f, 1.0f), glm::vec3{ 0.2f, 0.85f, 0.2f }, true);
 	}
 	ImGui::Checkbox("Draw BBs", &m_DrawBB);
 	ImGui::Checkbox("Draw vertices", &m_DrawVertices);
@@ -142,10 +140,8 @@ void PhysicsDemo::OnEvent(Eis::Event& e)
 	d.Dispatch<Eis::KeyPressedEvent>([&](Eis::KeyPressedEvent& e) -> bool
 		{
 			if (e.GetKeyCode() == EIS_KEY_E)
-			{
-				Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), 0.0f, Eis::Random::Vec2(0.7f, 1.5f), 1.0f, 0.3f);
-				m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
-			}
+				m_Entities.emplace_back(m_CamController.CalculateMouseWorldPos(), Eis::Random::Vec2(0.7f, 1.5f), Eis::Random::Vec3());
+
 			return false;
 		});
 	d.Dispatch<Eis::MouseButtonPressedEvent>([&](Eis::MouseButtonPressedEvent& e) -> bool
@@ -154,24 +150,13 @@ void PhysicsDemo::OnEvent(Eis::Event& e)
 				return false;
 
 			if (e.GetMouseButton() == EIS_MOUSE_BUTTON_0)
-			{
-				Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), 0.0f, Eis::Random::Vec2(0.7f, 1.5f), 1.0f, 0.3f);
-				m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
-			}
+				m_Entities.emplace_back(m_CamController.CalculateMouseWorldPos(), Eis::Random::Vec2(0.7f, 1.5f), Eis::Random::Vec3());
+
 			else if (e.GetMouseButton() == EIS_MOUSE_BUTTON_1)
-			{
-				Eis::PhysicsManager2D::AddBody(m_CamController.CalculateMouseWorldPos(), Eis::Random::Float(0.3f, 0.7f), 1.0f, 0.3f);
-				m_Colors.emplace_back(glm::vec4(Eis::Random::Vec3(), 1.0f));
-			}
+				m_Entities.emplace_back(m_CamController.CalculateMouseWorldPos(), Eis::Random::Float(0.7f, 1.5f), Eis::Random::Vec3());
 
 			return false;
 		});
 
 	m_CamController.OnEvent(e);
-}
-
-
-Eis::Layer::Factory PhysicsDemo::GetFactory()
-{
-	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<PhysicsDemo>(name); };
 }

@@ -61,7 +61,8 @@ project "Demos"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"IMGUI_USER_CONFIG=\"Eis/ImGui/ImGuiConfig.h\""
 	}
 
 	filter "toolset:msc*"

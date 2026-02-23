@@ -13,11 +13,11 @@ class App : public Eis::Application
 public:
 	App()
 	{
-		RegisterLayer(OverviewDemo::GetFactory(), "Overview");
-		RegisterLayer(PhysicsDemo::GetFactory(), "Physics");
-		RegisterLayer(SandDemo::GetFactory(), "Sand");
+		RegisterLayer<OverviewDemo>("Overview");
+		RegisterLayer<PhysicsDemo>("Physics");
+		RegisterLayer<SandDemo>("Sand");
 #ifdef EIS_NETWORKING_ENABLE
-		RegisterLayer(ChatDemo::GetFactory(), "Chat");
+		RegisterLayer<ChatDemo>("Chat");
 #endif
 	}
 

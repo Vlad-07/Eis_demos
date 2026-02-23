@@ -5,7 +5,7 @@
 
 #ifdef EIS_NETWORKING_ENABLE
 
-ChatDemo::ChatDemo(const std::string& name) : Layer(name) {}
+ChatDemo::ChatDemo() : Layer{ "Chat" } {}
 
 
 void ChatDemo::Attach()
@@ -234,12 +234,6 @@ void ChatDemo::ImGuiRender()
 
 		ImGui::End();
 	}
-}
-
-
-Eis::Layer::Factory ChatDemo::GetFactory()
-{
-	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<ChatDemo>(name); };
 }
 
 #endif

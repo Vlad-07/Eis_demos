@@ -9,7 +9,7 @@
 class OverviewDemo : public Eis::Layer
 {
 public:
-	OverviewDemo(const std::string& name);
+	OverviewDemo();
 	virtual ~OverviewDemo() = default;
 
 	virtual void Attach() override;
@@ -20,8 +20,6 @@ public:
 	virtual void ImGuiRender() override;
 
 	virtual void OnEvent(Eis::Event& e) override;
-
-	static Factory GetFactory();
 
 private:
 	Eis::OrthoCameraController m_CameraController{};

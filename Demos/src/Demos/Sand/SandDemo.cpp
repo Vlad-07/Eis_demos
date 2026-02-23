@@ -3,8 +3,8 @@
 #include "Demos/Menu.h"
 
 
-SandDemo::SandDemo(const std::string& name)
-	: Layer(name), m_World(c_WorldSize)
+SandDemo::SandDemo()
+	: Layer{ "Sand" }, m_World{ c_WorldSize }
 {}
 
 void SandDemo::Attach()
@@ -105,10 +105,4 @@ void SandDemo::ImGuiRender()
 void SandDemo::OnEvent(Eis::Event& e)
 {
 	m_CamController.OnEvent(e);
-}
-
-
-Eis::Layer::Factory SandDemo::GetFactory()
-{
-	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<SandDemo>(name); };
 }

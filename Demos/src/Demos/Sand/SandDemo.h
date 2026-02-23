@@ -9,7 +9,7 @@
 class SandDemo : public Eis::Layer
 {
 public:
-	SandDemo(const std::string& name);
+	SandDemo();
 	virtual ~SandDemo() = default;
 
 	virtual void Attach() override;
@@ -19,8 +19,6 @@ public:
 	virtual void ImGuiRender() override;
 
 	virtual void OnEvent(Eis::Event& e) override;
-
-	static Factory GetFactory();
 
 private:
 	Eis::OrthoCameraController m_CamController{};

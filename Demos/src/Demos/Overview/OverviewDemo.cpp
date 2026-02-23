@@ -3,7 +3,7 @@
 #include "Demos/Menu.h"
 
 
-OverviewDemo::OverviewDemo(const std::string& name): Layer(name) {}
+OverviewDemo::OverviewDemo() : Layer{ "Overview" } {}
 
 
 void OverviewDemo::Attach()
@@ -45,7 +45,8 @@ void OverviewDemo::Render()
 		static float rot = 0.0f; rot += 28.8f * (float)Eis::Time::GetDeltaTime();
 		if (rot >= 360.f) rot -= 360.0f;
 
-		Eis::Renderer2D::DrawRotatedTriangle(glm::mat3({ 0.3, 0.0, 0.0f }, { -0.3, -1.1, 0.0f }, { 1.5, -1.0, 0.0f }), -rot * 20, { 0.1f, 0.1f, 0.9f, 1.0f });
+		Eis::Renderer2D::DrawTriangle({ { 0.3, 0.0, 0.0f }, { -0.3, -1.1, 0.0f }, { 1.5, -1.0, 0.0f } }, { 0.8f, 0.2f, 0.2f, 1.0f });
+		Eis::Renderer2D::DrawRotatedTriangle({ { 0.3, 0.0, 0.0f }, { -0.3, -1.1, 0.0f }, { 1.5, -1.0, 0.0f } }, rot * (glm::abs(360.0f - rot) / 360.0f), { 0.1f, 0.1f, 0.9f, 1.0f });
 
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 1.0f), glm::vec2(1.0f, 0.3f), rot, glm::vec4(0.8f, 0.5f, 0.2f, 1.0f));
 		Eis::Renderer2D::DrawRotatedQuad(glm::vec2(2.0f, 0.0f), glm::vec2(1.0f), rot, mouce);
@@ -82,10 +83,4 @@ void OverviewDemo::ImGuiRender()
 void OverviewDemo::OnEvent(Eis::Event& e)
 {
 	m_CameraController.OnEvent(e);
-}
-
-
-Eis::Layer::Factory OverviewDemo::GetFactory()
-{
-	return [](const std::string& name) -> Eis::Scope<Layer> { return Eis::CreateScope<OverviewDemo>(name); };
 }

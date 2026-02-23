@@ -23,7 +23,7 @@
 class ChatDemo : public Eis::Layer
 {
 public:
-	ChatDemo(const std::string& name);
+	ChatDemo();
 	virtual ~ChatDemo() = default;
 
 	virtual void Attach() override;
@@ -31,8 +31,6 @@ public:
 
 	virtual void Render() override;
 	virtual void ImGuiRender() override;
-
-	static Factory GetFactory();
 
 private:
 	Eis::Scope<Eis::Server> m_Server; // Normally you should write sepparate
