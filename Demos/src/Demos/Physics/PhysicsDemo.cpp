@@ -16,7 +16,7 @@ PhysicsDemo::PhysicsDemo() : Layer{ "Physics" }
 		if (i % 2)
 			m_Entities.emplace_back(glm::vec2{ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 5.0f) }, Eis::Random::Float(0.3f, 0.7f), Eis::Random::Vec3());
 		else
-			m_Entities.emplace_back(glm::vec2{ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 7.0f) }, Eis::Random::Vec2(0.7f, 1.3f), Eis::Random::Vec3());
+			m_Entities.emplace_back(glm::vec2{ Eis::Random::Float(-15.0f, 15.0f), Eis::Random::Float(3.0f, 7.0f) }, Eis::Random::Vec2(0.7f, 1.5f), Eis::Random::Vec3());
 	}
 }
 
@@ -77,7 +77,7 @@ void PhysicsDemo::Render()
 
 		case Eis::Collider2D::Type::POLYGON:
 			Eis::Renderer2D::DrawQuad(*(glm::mat4x2*)rb.GetCollider().As<Eis::PolygonCollider2D>()
-				.GetTransformedVertices(rb.GetPosition(), rb.GetRotation()).data(), glm::vec4{ m_Entities[i].GetColor(), 1.0f });
+				.GetTransformedVertices().data(), glm::vec4{ m_Entities[i].GetColor(), 1.0f });
 			break;
 
 		default:
@@ -103,7 +103,7 @@ void PhysicsDemo::Render()
 			if (rb.GetCollider().GetType() != Eis::Collider2D::Type::POLYGON)
 				continue;
 
-			const auto& tv = rb.GetCollider().As<Eis::PolygonCollider2D>().GetTransformedVertices(rb.GetPosition(), rb.GetRotation());
+			const auto& tv = rb.GetCollider().As<Eis::PolygonCollider2D>().GetTransformedVertices();
 			Eis::Renderer2D::DrawCircle(tv[0], glm::vec2(0.1f), glm::vec4(1.0f));
 			Eis::Renderer2D::DrawCircle(tv[1], glm::vec2(0.1f), glm::vec4(1.0f));
 			Eis::Renderer2D::DrawCircle(tv[2], glm::vec2(0.1f), glm::vec4(1.0f));
@@ -153,7 +153,7 @@ void PhysicsDemo::OnEvent(Eis::Event& e)
 				m_Entities.emplace_back(m_CamController.CalculateMouseWorldPos(), Eis::Random::Vec2(0.7f, 1.5f), Eis::Random::Vec3());
 
 			else if (e.GetMouseButton() == EIS_MOUSE_BUTTON_1)
-				m_Entities.emplace_back(m_CamController.CalculateMouseWorldPos(), Eis::Random::Float(0.7f, 1.5f), Eis::Random::Vec3());
+				m_Entities.emplace_back(m_CamController.CalculateMouseWorldPos(), Eis::Random::Float(0.3f, 0.7f), Eis::Random::Vec3());
 
 			return false;
 		});

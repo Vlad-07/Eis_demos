@@ -8,11 +8,6 @@ workspace "Demos"
 		"Release"
 	}
 
-	flags
-	{
-		"MultiProcessorCompile"
-	}
-
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 
@@ -67,6 +62,7 @@ project "Demos"
 
 	filter "toolset:msc*"
 		buildoptions { "/utf-8" }
+		multiprocessorcompile "on"
 
 	filter "system:windows"
 		systemversion "latest"
