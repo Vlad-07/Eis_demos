@@ -15,6 +15,8 @@ void ImGuiMenu(Eis::EisContext& c)
 		c.App().QueueTransition("Physics");
 	if (ImGui::Button("Sand"))
 		c.App().QueueTransition("Sand");
+	if (ImGui::Button("Renderin"))
+		c.App().QueueTransition("Renderin");
 #ifdef EIS_NETWORKING_ENABLE
 	if (ImGui::Button("Chat"))
 		c.App().QueueTransition("Chat");
@@ -34,10 +36,5 @@ void ImGuiMenu(Eis::EisContext& c)
 		fps = frames / (float)elapsed.GetSeconds(), frames = 0, elapsed = Eis::Duration::FromSec(0.0f);
 
 	ImGui::Text("%.1f FPS (%.3f ms)", fps, 1000.0f / fps);
-	ImGui::Text("Draw calls:   %i", Eis::Renderer2D::GetStats().DrawCalls);
-	ImGui::Text("Tri count:    %i", Eis::Renderer2D::GetStats().TriangleCount);
-	ImGui::Text("Quad count:   %i", Eis::Renderer2D::GetStats().QuadCount);
-	ImGui::Text("Circle count: %i", Eis::Renderer2D::GetStats().CircleCount);
-	ImGui::Text("Line count:   %i", Eis::Renderer2D::GetStats().LineCount);
 	ImGui::End();
 }

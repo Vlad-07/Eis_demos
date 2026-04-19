@@ -7,7 +7,7 @@
 struct ElementParams
 {
 public:
-	enum ID : uint8_t
+	enum ID
 	{
 		AIR = 0, SAND = 1, WATER = 2, STONE = 3
 	};

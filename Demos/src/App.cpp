@@ -6,6 +6,7 @@
 #include "Demos/Physics/PhysicsDemo.h"
 #include "Demos/Sand/SandDemo.h"
 #include "Demos/Chat/ChatDemo.h"
+#include "Demos/Renderin/RenderinExp.h"
 
 
 class App : public Eis::Application
@@ -13,6 +14,7 @@ class App : public Eis::Application
 public:
 	App()
 	{
+		RegisterLayer<RenderinExp>("Renderin");
 		RegisterLayer<OverviewDemo>("Overview");
 		RegisterLayer<PhysicsDemo>("Physics");
 		RegisterLayer<SandDemo>("Sand");
