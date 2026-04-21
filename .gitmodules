@@ -1,3 +1,4 @@
 [submodule "Eis"]
 	path = Eis
 	url = https://github.com/Vlad-07/Eis
+	branch = main
